@@ -19,10 +19,13 @@ dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api("org.apache.commons:commons-math3:3.6.1")
 
-    api("org.apache.logging.log4j:log4j-api:2.14.0")
-    api("org.apache.logging.log4j:log4j-core:2.14.0")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
-    api("com.fasterxml.jackson.core:jackson-databind:2.12.1")
+    api("org.apache.logging.log4j:log4j-api:2.14.1")
+    api("org.apache.logging.log4j:log4j-core:2.14.1")
+    api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0")
+    api("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+
+    api("org.trlegram.telegrambots:5.3.0")
+    api("org.trlegram.telegrambotsextensions:5.3.0")
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation("com.google.guava:guava:31.0.1-jre")
