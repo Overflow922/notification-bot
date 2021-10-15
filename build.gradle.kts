@@ -24,8 +24,8 @@ dependencies {
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0")
     api("com.fasterxml.jackson.core:jackson-databind:2.13.0")
 
-    api("org.trlegram.telegrambots:5.3.0")
-    api("org.trlegram.telegrambotsextensions:5.3.0")
+    api("org.telegram.telegrambots:5.3.0")
+    api("org.telegram.telegrambotsextensions:5.3.0")
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation("com.google.guava:guava:31.0.1-jre")
