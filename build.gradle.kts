@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 plugins {
     // Apply the java-library plugin to add support for Java Library
     `java-library`
-    id("com.github.spotbugs") version "4.6.0"
+    id("com.github.spotbugs") version "4.7.1"
     jacoco
 }
 
@@ -33,7 +33,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.6.0")
+        classpath("gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.1")
     }
 }
 
