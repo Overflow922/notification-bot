@@ -2,15 +2,16 @@ package com.iyuriy.notification.services;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class TimerEvent {
 
     private final boolean isRepeatable;
-    private final LocalDate triggerTime;
+    private final LocalDateTime triggerTime;
     private final Duration interval;
 
-    public TimerEvent(boolean isRepeatable, LocalDate triggerTime, Duration interval) {
+    public TimerEvent(boolean isRepeatable, LocalDateTime triggerTime, Duration interval) {
         this.isRepeatable = isRepeatable;
         this.triggerTime = triggerTime;
         this.interval = interval;
@@ -20,7 +21,7 @@ public class TimerEvent {
         return isRepeatable;
     }
 
-    public LocalDate getTriggerTime() {
+    public LocalDateTime getTriggerTime() {
         return triggerTime;
     }
 

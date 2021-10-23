@@ -11,7 +11,6 @@ plugins {
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
     mavenCentral()
 }
 
@@ -24,6 +23,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.assertj:assertj-core:3.21.0")
 }
 
 buildscript {
@@ -34,6 +34,12 @@ buildscript {
     }
     dependencies {
         classpath("gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.6.0")
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -57,15 +63,15 @@ tasks.jacocoTestReport {
 
 
 jacoco {
-    toolVersion = "0.8.6"
+    toolVersion = "0.8.7"
     reportsDirectory.set(file("$buildDir/customJacocoReportDir"))
 }
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(file("${buildDir}/jacocoHtml"))
     }
 }
 
