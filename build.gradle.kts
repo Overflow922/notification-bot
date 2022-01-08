@@ -15,14 +15,15 @@ repositories {
 }
 
 dependencies {
-    api("org.apache.logging.log4j:log4j-api:2.14.1")
-    api("org.apache.logging.log4j:log4j-core:2.14.1")
+    api("org.apache.logging.log4j:log4j-api:2.17.0")
+    api("org.apache.logging.log4j:log4j-core:2.17.0")
 
-    implementation("org.telegram:telegrambots:5.3.0")
-    implementation("org.telegram:telegrambotsextensions:5.3.0")
+    implementation("org.telegram:telegrambots:5.4.0.1")
+    implementation("org.telegram:telegrambotsextensions:5.5.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.assertj:assertj-core:3.21.0")
 }
 
