@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 plugins {
     // Apply the java-library plugin to add support for Java Library
     `java-library`
-    id("com.github.spotbugs") version "4.7.1"
+    id("com.github.spotbugs") version "5.0.6"
     jacoco
 }
 
@@ -22,20 +22,9 @@ dependencies {
     implementation("org.telegram:telegrambotsextensions:5.7.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.assertj:assertj-core:3.22.0")
-}
-
-buildscript {
-    repositories {
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-    }
-    dependencies {
-        classpath("gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.1")
-    }
 }
 
 java {
@@ -80,7 +69,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "0.95".toBigDecimal()
+                minimum = "0.5".toBigDecimal()
             }
         }
     }

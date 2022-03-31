@@ -1,6 +1,5 @@
 package com.iyuriy.notification.services;
 
-import javax.annotation.Nullable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,8 +21,6 @@ import java.util.Set;
  * <p>Based on chains. Chain element is
  */
 public class ScheduleParser {
-
-    private record TimerEventEntry(String timestamp, @Nullable String condition) {}
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("H:m");
 
