@@ -1,5 +1,8 @@
-package com.iyuriy.notification.services;
+package com.iyuriy.services;
 
+import com.iyuriy.notification.services.ScheduleParser;
+import com.iyuriy.notification.services.TimerEvent;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,8 +11,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ScheduleParserTest {
 
@@ -27,7 +28,7 @@ class ScheduleParserTest {
                 Arguments.of(
                         "09:30",
                         Set.of(new TimerEvent(false, TODAY.atTime(9, 30), TimerEvent.INFINITY)))
-                );
+        );
     }
 
     @ParameterizedTest
@@ -35,6 +36,6 @@ class ScheduleParserTest {
     void test(String input, Set<TimerEvent> expected) {
         Set<TimerEvent> timerEvents = PARSER.parse(input);
 
-        assertThat(timerEvents).isEqualTo(expected);
+        AssertionsForClassTypes.assertThat(timerEvents).isEqualTo(expected);
     }
 }

@@ -1,0 +1,1 @@
+Adapter for cooperating with Telegram

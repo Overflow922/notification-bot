@@ -1,5 +1,10 @@
-package com.iyuriy.notification.services;
+package com.iyuriy.services;
 
+import com.iyuriy.notification.services.EventSchedule;
+import com.iyuriy.notification.services.PeriodicalTimerService;
+import com.iyuriy.notification.services.TimerEvent;
+import com.iyuriy.notification.services.TimerService;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,9 +13,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class PeriodicalTimerServiceTest {
 
@@ -22,8 +24,8 @@ class PeriodicalTimerServiceTest {
 
     public static Stream<Arguments> timerEventGenerator() {
         return Stream.of(
-                arguments(NON_REPEATABLE, DELAY, TimerEvent.INFINITY, 1),
-                arguments(REPEATABLE, DELAY, Duration.ofMillis(DELAY), 3));
+                Arguments.arguments(NON_REPEATABLE, DELAY, TimerEvent.INFINITY, 1),
+                Arguments.arguments(REPEATABLE, DELAY, Duration.ofMillis(DELAY), 3));
     }
 
     void callback() {
@@ -44,6 +46,6 @@ class PeriodicalTimerServiceTest {
         service.schedule(schedule, timerEvent -> callback());
         Thread.sleep(expectedCallNumber * DELAY);
 
-        assertThat(counter.get()).isEqualTo(expectedCallNumber);
+        AssertionsForClassTypes.assertThat(counter.get()).isEqualTo(expectedCallNumber);
     }
 }
