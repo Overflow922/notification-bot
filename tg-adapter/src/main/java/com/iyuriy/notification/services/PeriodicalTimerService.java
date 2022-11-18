@@ -7,12 +7,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-/** Periodically checks which actions can be executed. */
+/**
+ * Periodically checks which actions can be executed.
+ */
 public final class PeriodicalTimerService implements TimerService {
 
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
-    private PeriodicalTimerService() {}
+    private PeriodicalTimerService() {
+    }
 
     public static TimerService of() {
         return new PeriodicalTimerService();
