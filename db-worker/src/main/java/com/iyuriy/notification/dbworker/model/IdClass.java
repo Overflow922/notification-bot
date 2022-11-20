@@ -1,12 +1,13 @@
 package com.iyuriy.notification.dbworker.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@MappedSuperclass
 public class IdClass {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "default_seq")
+    @SequenceGenerator(name = "default_seq",
+            sequenceName = "default_seq", allocationSize = 1)
     private Long id;
 }
