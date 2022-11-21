@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+
     implementation("org.liquibase:liquibase-core")
     compileOnly("org.projectlombok:lombok:1.18.24")
     runtimeOnly("org.postgresql:postgresql")
