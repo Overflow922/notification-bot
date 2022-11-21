@@ -1,4 +1,4 @@
-package com.iyuriy.notification.dbworker.configuration;
+package com.iyuriy.notification.dbworker.service;
 
 import com.iyuriy.notification.common.entities.AddNotification;
 import com.iyuriy.notification.dbworker.model.Schedule;
