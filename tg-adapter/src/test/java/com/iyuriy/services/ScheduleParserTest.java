@@ -3,6 +3,7 @@ package com.iyuriy.services;
 import com.iyuriy.notification.model.UserEventType;
 import com.iyuriy.notification.services.ScheduleParser;
 import com.iyuriy.notification.services.UserEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ class ScheduleParserTest {
     private static final LocalDate TODAY = LocalDate.now();
 
     @Test
+    @Disabled("feature isn't implemented yet")
     void parse_add_1615_text() {
         UserEvent event = PARSER.parseEvent("add 16:15 text");
         assertNotNull(event);
