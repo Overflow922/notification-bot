@@ -1,3 +1,4 @@
+-- todo: change to relevant migration schema
 CREATE SEQUENCE default_seq;
 
 CREATE TABLE TASK

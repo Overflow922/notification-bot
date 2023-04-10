@@ -13,23 +13,6 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-    implementation("org.liquibase:liquibase-core")
-    runtimeOnly("org.postgresql:postgresql")
-
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.getByName<Test>("test") {

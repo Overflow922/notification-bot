@@ -10,5 +10,5 @@
 rootProject.name = "notification-bot"
 include("common")
 include("tg-adapter")
-include("scheduler")
+include("db-adapter")
 include("db-worker")

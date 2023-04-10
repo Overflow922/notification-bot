@@ -2,8 +2,8 @@ package com.iyuriy.notification.commands;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -21,7 +21,6 @@ public class AddPeriodicTimer extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 
     }
-
 
     void sendAnswer(AbsSender absSender, Long chatId, String commandName, String userName, String text) {
         SendMessage message = new SendMessage();
