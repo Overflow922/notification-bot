@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     dependencies {
         implementation(project(":common"))
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
