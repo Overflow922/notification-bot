@@ -19,7 +19,7 @@ dependencies {
         implementation("com.fasterxml.jackson.core:jackson-databind")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
-        implementation("org.liquibase:liquibase-core")
+//        implementation("org.liquibase:liquibase-core")
         runtimeOnly("org.postgresql:postgresql")
 
         compileOnly("org.projectlombok:lombok:1.18.24")
@@ -30,6 +30,9 @@ dependencies {
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+        implementation("org.modelmapper:modelmapper:3.1.1")
+
     }
 }
 
