@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EntityScan("com.iyuriy.notification.common.models")
+@EntityScan("com.iyuriy.notification.common")
 @EnableJpaRepositories
 @SpringBootApplication
 public class DbAdapterApplication {

@@ -13,7 +13,7 @@ import java.time.Instant;
 @Getter
 @ToString
 @Entity
-@Table(name = "Schedule_event")
+@Table(name = "schedule_event")
 public final class ScheduleEvent {
 
     @Id

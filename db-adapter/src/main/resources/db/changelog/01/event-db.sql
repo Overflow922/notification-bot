@@ -6,27 +6,4 @@ CREATE TABLE Schedule_event
     original_rq       varchar(255) NOT NULL,
     created_at        TIMESTAMPTZ
 );
-
-
--- todo: change to relevant migration schema
-CREATE SEQUENCE default_seq;
-
-CREATE TABLE TASK
-(
-    id          BIGSERIAL    NOT NULL PRIMARY KEY,
-    text        VARCHAR(255),
-    original_rq VARCHAR(255) NOT NULL
-);
-CREATE TABLE SCHEDULE
-(
-    ID        BIGSERIAL NOT NULL PRIMARY KEY,
-    TIMESTAMP TIMESTAMPTZ,
-    TASK_ID   BIGSERIAL NOT NULL
-);
-
-ALTER TABLE SCHEDULE
-    ADD CONSTRAINT SCHEDULE_TASK_FK
-        FOREIGN KEY (TASK_ID)
-            REFERENCES TASK (ID);
-
-
+select * from Schedule_event;

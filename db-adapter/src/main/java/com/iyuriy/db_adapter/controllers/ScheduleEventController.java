@@ -7,6 +7,7 @@ import com.iyuriy.notification.common.models.ScheduleEvent;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -28,27 +29,9 @@ public class ScheduleEventController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("/addEvent")
-    public String addEvent(ScheduleEventDto scheduleEventDto){
-        return "scheduleEventDto return";
-    }
-
-    @GetMapping()
-    public List<ScheduleEventDto> getScheduleEvents() {
-        return (scheduleEventService.findAll()
-                .stream()
-                .map(this::convertToScheduleDTO)
-                .collect(Collectors.toList()));
-    }
-
-    @GetMapping("/{id}")
-    public ScheduleEventDto getScheduleEvent(@PathVariable("id") long id) {
-        return convertToScheduleDTO(scheduleEventService.findOne(id));
-    }
-
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid ScheduleEventDto scheduleEventDto,
-                                             BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> createScheduleEvent(@RequestBody @Valid ScheduleEventDto scheduleEventDto,
+                                                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -65,11 +48,30 @@ public class ScheduleEventController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ScheduleEventDto getScheduleEventById(@PathVariable("id") Long id) {
+        return convertToScheduleDTO(scheduleEventService.findOne(id));
+    }
+
+    @GetMapping()
+    public List<ScheduleEventDto> getAllScheduleEvents() {
+        return (scheduleEventService.findAll()
+                .stream()
+                .map(this::convertToScheduleDTO)
+                .collect(Collectors.toList()));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteScheduleEventById(@PathVariable("id") Long id) {
+//        convertToScheduleDTO(scheduleEventService.delete(id));
+        scheduleEventService.delete(id);
+    }
+
     private ScheduleEvent convertToSchedule(ScheduleEventDto scheduleEventDto) {
         return modelMapper.map(scheduleEventDto, ScheduleEvent.class);
     }
 
-    private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent){
+    private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent) {
         return modelMapper.map(scheduleEvent, ScheduleEventDto.class);
     }
 }
