@@ -19,7 +19,7 @@ public final class ScheduleEvent {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "time_to_trigger")
     private Instant timeToTrigger;

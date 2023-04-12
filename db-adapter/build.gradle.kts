@@ -31,6 +31,7 @@ dependencies {
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+        implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
         implementation("org.modelmapper:modelmapper:3.1.1")
 
     }

@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ScheduleEventRepository extends JpaRepository<ScheduleEvent, Long> {
 
-
 }
