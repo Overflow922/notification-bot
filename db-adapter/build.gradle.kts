@@ -31,10 +31,8 @@ dependencies {
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-//        temychp add
         implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
         implementation("org.modelmapper:modelmapper:3.1.1")
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
         implementation("org.springframework:spring-web:5.3.26")
 
     }

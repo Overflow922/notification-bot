@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 import java.util.List;
@@ -50,19 +51,21 @@ public class ScheduleEventService {
         scheduleEvent.setCreatedAt(Instant.now());
     }
 
-    private ResponseEntity<ScheduleEventErrorResponse> handleException(ScheduleEventNotFoundException e) {
-        ScheduleEventErrorResponse response =
-                new ScheduleEventErrorResponse("Schedule Event with this id not found",
-                        System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    private ResponseEntity<ScheduleEventErrorResponse> handleException(ScheduleEventNotCreatedException e) {
-        ScheduleEventErrorResponse response =
-                new ScheduleEventErrorResponse(
-                        e.getMessage(),
-                        System.currentTimeMillis()
-                );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    private ResponseEntity<ScheduleEventErrorResponse> handleException(ScheduleEventNotFoundException e) {
+//        ScheduleEventErrorResponse response =
+//                new ScheduleEventErrorResponse("Schedule Event with this id not found",
+//                        System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<ScheduleEventErrorResponse> handleException(ScheduleEventNotCreatedException e) {
+//        ScheduleEventErrorResponse response =
+//                new ScheduleEventErrorResponse(
+//                        e.getMessage(),
+//                        System.currentTimeMillis()
+//                );
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
 }

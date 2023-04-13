@@ -6,4 +6,3 @@ CREATE TABLE Schedule_event
     original_rq       varchar(255) NOT NULL,
     created_at        TIMESTAMPTZ
 );
-select * from Schedule_event;

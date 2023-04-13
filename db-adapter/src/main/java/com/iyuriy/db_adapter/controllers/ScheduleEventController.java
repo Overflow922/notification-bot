@@ -47,23 +47,12 @@ public class ScheduleEventController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ScheduleEventDto getScheduleEventById(@PathVariable("id") Long id) {
-        return convertToScheduleDTO(scheduleEventService.findOne(id));
-    }
-
     @GetMapping()
     public List<ScheduleEventDto> getAllScheduleEvents() {
         return (scheduleEventService.findAll()
                 .stream()
                 .map(this::convertToScheduleDTO)
                 .collect(Collectors.toList()));
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteScheduleEventById(@PathVariable("id") Long id) {
-//        convertToScheduleDTO(scheduleEventService.delete(id));
-        scheduleEventService.delete(id);
     }
 
     private ScheduleEvent convertToSchedule(ScheduleEventDto scheduleEventDto) {
@@ -73,4 +62,10 @@ public class ScheduleEventController {
     private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent) {
         return modelMapper.map(scheduleEvent, ScheduleEventDto.class);
     }
+
+    @GetMapping("/{id}")
+    public ScheduleEventDto getScheduleEventById(@PathVariable("id") Long id) {
+        return convertToScheduleDTO(scheduleEventService.findOne(id));
+    }
+
 }
