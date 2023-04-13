@@ -62,4 +62,10 @@ public class ScheduleEventController {
     private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent) {
         return modelMapper.map(scheduleEvent, ScheduleEventDto.class);
     }
+
+    @GetMapping("/{id}")
+    public ScheduleEventDto getScheduleEventById(@PathVariable("id") Long id) {
+        return convertToScheduleDTO(scheduleEventService.findOne(id));
+    }
+
 }
