@@ -30,6 +30,9 @@ public final class ScheduleEvent {
     @Column(name = "original_rq")
     private String originalRq;
 
+    @Column(name = "is_sent_to_adapter")
+    private Instant isSentToAdapter;
+
     @Column(name = "created_at")
     private Instant createdAt;
 
