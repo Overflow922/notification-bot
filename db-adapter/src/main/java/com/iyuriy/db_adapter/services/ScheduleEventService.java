@@ -30,11 +30,6 @@ public class ScheduleEventService {
         scheduleEventRepository.save(scheduleEvent);
     }
 
-    @Transactional
-    public void delete(Long id) {
-        scheduleEventRepository.deleteById(id);
-    }
-
     private void enrichScheduleEvent(ScheduleEvent scheduleEvent) {
         scheduleEvent.setCreatedAt(Instant.now());
     }

@@ -46,6 +46,7 @@ dependencies {
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 //        implementation("org.liquibase:liquibase-core")
+
         runtimeOnly("org.postgresql:postgresql")
 
         compileOnly("org.projectlombok:lombok:1.18.24")
@@ -60,7 +61,7 @@ dependencies {
         implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
         implementation("org.modelmapper:modelmapper:3.1.1")
         implementation("org.springframework:spring-web:5.3.26")
-
+        implementation("org.springframework:spring-jdbc:6.0.6")
     }
 }
 
