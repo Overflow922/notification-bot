@@ -24,10 +24,10 @@ public class DbWorkerApplication {
         SpringApplication.run(DbWorkerApplication.class, args);
     }
 
-    @Bean
-    public ScheduleEvent scheduleEvent() {
-        return new ScheduleEvent();
-    }
+//    @Bean
+//    public ScheduleEvent scheduleEvent() {
+//        return new ScheduleEvent();
+//    }
 
 
 }

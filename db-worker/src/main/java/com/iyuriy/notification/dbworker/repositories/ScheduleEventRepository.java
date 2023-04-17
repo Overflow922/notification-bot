@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ScheduleEventRepository extends JpaRepository<ScheduleEvent, Long> {
 
-    List<ScheduleEvent> findByTimeToTriggerBeforeAndIsSentToAdapterIsNull(Instant timeToTrigger, Instant isSentToAdapter);
+    List<ScheduleEvent> findByTimeToTriggerBeforeAndIsSentToAdapterIsNull(Instant timeToTrigger);
 
 }
