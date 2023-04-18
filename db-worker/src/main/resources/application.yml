@@ -5,4 +5,10 @@ spring:
     password: mysecretpassword
     driver-class-name: org.postgresql.Driver
 
-    liquibase.change-log: db/myChangeLog.xml
+db-adapter-rest:
+  url: db-adapter
+
+tg-adapter-rest:
+  url: tg-adapter
+
+interval: PT05S
