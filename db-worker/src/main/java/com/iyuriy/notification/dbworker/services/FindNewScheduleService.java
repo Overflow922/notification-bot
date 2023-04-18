@@ -12,3 +12,4 @@ public interface FindNewScheduleService {
     void updateWhenSendToAdapter(ScheduleEvent updatedScheduleEvent);
 
 }
+

@@ -28,6 +28,7 @@ public class FindNewScheduleServiceImpl implements FindNewScheduleService {
         this.scheduleEvent = scheduleEvent;
     }
 
+
     public List<ScheduleEvent> findNewSchedules(Instant timeToTrigger) {
         return scheduleEventRepository.findByTimeToTriggerBeforeAndIsSentToAdapterIsNull(timeToTrigger);
     }
