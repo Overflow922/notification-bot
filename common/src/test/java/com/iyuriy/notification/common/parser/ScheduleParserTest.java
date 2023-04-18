@@ -1,8 +1,5 @@
-package com.iyuriy.services;
+package com.iyuriy.notification.common.parser;
 
-import com.iyuriy.notification.common.parser.TextScheduleParser;
-import com.iyuriy.notification.common.parser.UserEvent;
-import com.iyuriy.notification.common.parser.UserEventType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ScheduleParserTest {
+
     private static final TextScheduleParser PARSER = new TextScheduleParser();
     private static final LocalDate TODAY = LocalDate.now();
 
@@ -30,4 +28,5 @@ class ScheduleParserTest {
     private LocalDateTime today(int hour, int mins) {
         return LocalDateTime.of(TODAY, LocalTime.of(hour, mins));
     }
+
 }

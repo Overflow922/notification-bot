@@ -7,7 +7,9 @@
 
     <changeSet id="1" author="...">
         <comment>Creating common tables</comment>
-        <sqlFile path="changelog/01/event-db.sql"
+    task/tg-adapter-init
+        <sqlFile path="changelog/01/create-chat-table.sql"
+
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

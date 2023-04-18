@@ -1,6 +1,4 @@
-package com.iyuriy.notification.services;
-
-import com.iyuriy.notification.model.UserEventType;
+package com.iyuriy.notification.common.parser;
 
 import java.time.LocalDateTime;
 
