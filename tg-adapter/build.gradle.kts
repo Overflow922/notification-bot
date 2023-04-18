@@ -12,11 +12,17 @@ repositories {
     mavenCentral()
 }
 dependencies {
+
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework:spring-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+    api("org.apache.logging.log4j:log4j-api:2.19.0")
+    api("org.apache.logging.log4j:log4j-core:2.19.0")
+
+    implementation("org.modelmapper:modelmapper:3.1.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
@@ -24,7 +30,6 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation("org.mockito:mockito-all:1.10.19")
     testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 
     compileOnly("org.projectlombok:lombok:1.18.24")
