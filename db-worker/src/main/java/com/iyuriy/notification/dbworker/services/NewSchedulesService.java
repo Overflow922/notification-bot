@@ -4,6 +4,8 @@ import com.iyuriy.notification.common.models.ScheduleEvent;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,10 +39,12 @@ public class NewSchedulesService {
     @Scheduled(fixedDelayString = "${interval}")
     public void findNewSchedules() {
         log.info("Scheduler: the time is now {}", dateFormat.format(new Date()));
-        List<ScheduleEvent> scheduleEvents = findNewScheduleService.findNewSchedules(Instant.now());
+        List<ScheduleEvent> scheduleEvents = findNewScheduleService.findNewSchedules(Instant.from(ZonedDateTime.now()));
         for (ScheduleEvent event : scheduleEvents) {
-//          scheduleSenderService.sendToTgA(event);
-            findNewScheduleService.updateWhenSendToAdapter(event);
+            ResponseEntity<HttpStatus> response = scheduleSenderService.sendToTgA(event);
+            if (response.getStatusCode() == HttpStatus.OK){
+                findNewScheduleService.updateWhenSendToAdapter(event);
+            }
         }
     }
 }

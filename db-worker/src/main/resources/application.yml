@@ -6,9 +6,15 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 db-adapter-rest:
-  url: db-adapter
+  url: http://db-adapter
 
 tg-adapter-rest:
-  url: tg-adapter
+  url: http://tg-adapter
 
-interval: PT05S
+interval: 5000
+
+server:
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-exception: true
