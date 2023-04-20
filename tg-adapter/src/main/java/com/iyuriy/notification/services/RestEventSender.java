@@ -1,6 +1,6 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.parser.UserEvent;
+import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.configs.RestEventSenderConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,9 @@ public class RestEventSender implements EventSender {
     private final RestEventSenderConfiguration configuration;
 
     @Override
-    public boolean send(UserEvent event) {
+    public boolean send(ScheduleEvent event) {
         ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrl(), event, Void.class);
 
-        entity.getBody();
         return entity.getStatusCode() == HttpStatus.OK;
     }
 }
