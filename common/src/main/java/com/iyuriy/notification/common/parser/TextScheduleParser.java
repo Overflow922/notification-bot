@@ -2,10 +2,7 @@ package com.iyuriy.notification.common.parser;
 
 import com.iyuriy.notification.common.models.ScheduleEvent;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class TextScheduleParser implements ScheduleParser {
@@ -29,7 +26,7 @@ public class TextScheduleParser implements ScheduleParser {
             LocalDateTime timeToTrigger = parseTime(time);
             return ScheduleEvent.builder()
                     .notificationText(strings[2])
-                    .timeToTrigger(Instant.from(timeToTrigger))
+                    .timeToTrigger(ZonedDateTime.of(timeToTrigger, ZoneId.systemDefault()).toInstant())
                     .originalRq(text)
                     .build();
         } catch (RuntimeException e) {
