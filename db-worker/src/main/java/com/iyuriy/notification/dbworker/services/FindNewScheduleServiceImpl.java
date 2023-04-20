@@ -22,13 +22,11 @@ public class FindNewScheduleServiceImpl implements FindNewScheduleService {
 
     private final ScheduleEvent scheduleEvent;
 
-
     @Autowired
     public FindNewScheduleServiceImpl(ScheduleEventRepository scheduleEventRepository, ScheduleEvent scheduleEvent) {
         this.scheduleEventRepository = scheduleEventRepository;
         this.scheduleEvent = scheduleEvent;
     }
-
 
 
     public List<ScheduleEvent> findNewSchedules(Instant timeToTrigger) {

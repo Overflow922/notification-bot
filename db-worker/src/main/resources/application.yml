@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event-db
+    username: postgres
+    password: mysecretpassword
+    driver-class-name: org.postgresql.Driver
+
+db-adapter-rest:
+  url: http://db-adapter
+
+tg-adapter-rest:
+  url: http://tg-adapter
+
+interval: 5000
+
+server:
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-exception: true
