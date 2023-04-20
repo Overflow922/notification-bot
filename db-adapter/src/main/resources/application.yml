@@ -6,6 +6,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 
-    liquibase.change-log: db/myChangeLog.xml
+  liquibase.change-log: db/myChangeLog.xml
 
 

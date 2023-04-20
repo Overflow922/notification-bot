@@ -1,25 +1,45 @@
 version: '3.7'
 services:
   db:
+    container_name: db
     image: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
     ports:
       - 5432:5432
+    networks:
+      - notification
 
   db-adapter:
     build:
       context: db-adapter
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
       - db
+      - tg-adapter
     networks:
       - notification
 
   db-worker:
     build:
       context: db-worker
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
       - db
+    networks:
+      - notification
+
+  tg-adapter:
+    build:
+      context: tg-adapter
+    depends_on:
+      - db-worker
     networks:
       - notification
 
