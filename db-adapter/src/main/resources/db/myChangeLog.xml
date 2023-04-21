@@ -5,13 +5,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="1" author="...">
+    <changeSet id="1" author="temychpp">
         <comment>Creating common tables</comment>
 
         <sqlFile path="changelog/01/event-db.sql"
-
-    task/tg-adapter-init
-
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet id="2" author="Yuriy">
+        <comment>Creating common tables</comment>
+        <sqlFile path="changelog/01/alter_schedule_event.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

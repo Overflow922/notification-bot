@@ -1,7 +1,7 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.parser.UserEvent;
+import com.iyuriy.notification.common.models.ScheduleEvent;
 
 public interface EventSender {
-    boolean send(UserEvent event);
+    boolean send(ScheduleEvent event);
 }

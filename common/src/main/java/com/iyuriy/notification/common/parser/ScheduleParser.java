@@ -1,7 +1,8 @@
 package com.iyuriy.notification.common.parser;
 
+import com.iyuriy.notification.common.models.ScheduleEvent;
+
 public interface ScheduleParser {
 
-    // TODO use model type from https://github.com/Overflow922/notification-bot/pull/12
-    UserEvent parseEvent(String text);
+    ScheduleEvent parseEvent(String text);
 }

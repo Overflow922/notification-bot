@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.iyuriy.notification"
-version = "0.0.1=SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,8 +14,7 @@ repositories {
 dependencies {
 
     implementation(project(":common"))
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 

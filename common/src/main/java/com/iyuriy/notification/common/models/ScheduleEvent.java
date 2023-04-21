@@ -1,14 +1,13 @@
 package com.iyuriy.notification.common.models;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Setter
 @Getter
 @ToString
@@ -36,4 +35,6 @@ public final class ScheduleEvent {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @Column(name = "user_id")
+    private String userId;
 }
