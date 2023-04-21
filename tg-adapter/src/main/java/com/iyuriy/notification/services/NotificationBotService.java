@@ -1,5 +1,6 @@
 package com.iyuriy.notification.services;
 
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
@@ -35,8 +36,11 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
             log.info("incoming message from {}", chatId);
             try {
                 ScheduleEvent event = parser.parseEvent(text);
+                event.setUserId(chatId);
+                log.info("Sending event: {}", event);
                 sender.send(event);
             } catch (Exception e) {
+                log.error("Произошла ошибка.", e);
                 // todo we can get exception here. Catch logic should be moved to separate method with exception handling
                 SendMessage outMess = new SendMessage();
                 outMess.setChatId(chatId);
@@ -46,7 +50,7 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
         }
     }
 
-    public void notifyUser(ScheduleEvent event) throws TelegramApiException {
+    public void notifyUser(ScheduleEventDto event) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setChatId(event.getUserId());
         message.setText(event.getNotificationText());

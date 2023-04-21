@@ -1,6 +1,6 @@
 package com.iyuriy.notification.controller;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.services.NotificationBotService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class NotifyUserController {
     private final NotificationBotService service;
 
     @PostMapping()
-    public ResponseEntity<Void> notifyUser(@RequestBody ScheduleEvent event) {
+    public ResponseEntity<Void> notifyUser(@RequestBody ScheduleEventDto event) {
         ResponseEntity<Void> result;
         try {
             service.notifyUser(event);

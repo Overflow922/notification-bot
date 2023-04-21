@@ -1,2 +1,2 @@
 alter table Schedule_event
-    add used_id varchar(255)
+    add user_id varchar(255)
