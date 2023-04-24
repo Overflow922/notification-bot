@@ -3,4 +3,4 @@ telegram:
     name: 'notification-dev'
     token: '5806045769:AAGWnJbCusIKOK1SSEAWf0xwpwMb6Io5ySQ'
 db-adapter-rest:
-  url: db-adapter
+  url: http://db-adapter:8080/schedule

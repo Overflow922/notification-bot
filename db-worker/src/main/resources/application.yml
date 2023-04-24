@@ -6,10 +6,10 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 db-adapter-rest:
-  url: http://db-adapter
+  url: http://db-adapter:8080/schedule
 
 tg-adapter-rest:
-  url: http://tg-adapter
+  url: http://tg-adapter:8080/notify-user
 
 interval: 5000
 

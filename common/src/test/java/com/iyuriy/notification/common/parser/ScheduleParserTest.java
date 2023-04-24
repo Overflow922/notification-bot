@@ -1,10 +1,9 @@
 package com.iyuriy.notification.common.parser;
 
+import com.iyuriy.notification.common.models.ScheduleEvent;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,17 +15,16 @@ class ScheduleParserTest {
 
     @Test
     void parse_add_1615_text() {
-        UserEvent event = PARSER.parseEvent("add 16:15 text");
+        ScheduleEvent event = PARSER.parseEvent("add 16:15 text");
         assertNotNull(event);
 
         // check fields
-        assertThat(event.getType()).isEqualTo(UserEventType.ADD);
-        assertThat(event.getTriggerTime()).isEqualTo(today(16, 15));
+        assertThat(event.getTimeToTrigger()).isEqualTo(today(16, 15));
         assertThat(event.getNotificationText()).isEqualTo("text");
     }
 
-    private LocalDateTime today(int hour, int mins) {
-        return LocalDateTime.of(TODAY, LocalTime.of(hour, mins));
+    private Instant today(int hour, int mins) {
+        return ZonedDateTime.of(TODAY, LocalTime.of(hour, mins), ZoneId.systemDefault()).toInstant();
     }
 
 }
