@@ -1,7 +1,6 @@
 package com.iyuriy.notification.dbworker.services;
 
 import com.iyuriy.notification.common.models.ScheduleEvent;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -23,7 +21,7 @@ import java.util.Locale;
 @Transactional(readOnly = true)
 public class NewSchedulesService {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     private final FindNewScheduleService findNewScheduleService;
 

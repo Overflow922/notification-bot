@@ -17,7 +17,7 @@ public class NotifyUserController {
 
     private final NotificationBotService service;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> notifyUser(@RequestBody ScheduleEventDto event) {
         ResponseEntity<Void> result;
         try {
