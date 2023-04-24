@@ -4,7 +4,8 @@ import com.iyuriy.db_adapter.services.ScheduleEventService;
 import com.iyuriy.db_adapter.util.ScheduleEventNotCreatedException;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.util.ScheduleEventConvertor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
+@AllArgsConstructor
 @RequestMapping("/schedule")
 @RestController
 public class ScheduleEventController {
@@ -22,12 +25,6 @@ public class ScheduleEventController {
     private final ScheduleEventService scheduleEventService;
 
     private final ScheduleEventConvertor convertor;
-
-    @Autowired
-    public ScheduleEventController(ScheduleEventService scheduleEventService, ScheduleEventConvertor convertor) {
-        this.scheduleEventService = scheduleEventService;
-        this.convertor = convertor;
-    }
 
     @PostMapping
     public ResponseEntity<HttpStatus> createScheduleEvent(@RequestBody @Valid ScheduleEventDto scheduleEventDto,
@@ -42,9 +39,11 @@ public class ScheduleEventController {
                         .append(error.getDefaultMessage())
                         .append(";");
             }
+            log.error("Ошибка {}", errorMsg);
             throw new ScheduleEventNotCreatedException(errorMsg.toString());
         }
         scheduleEventService.save(convertor.DtoToModel(scheduleEventDto));
+        log.info("Save to database event: {}", scheduleEventDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
