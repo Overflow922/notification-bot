@@ -1,5 +1,6 @@
 package com.iyuriy.notification.controller;
 
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.services.NotificationBotService;
 import lombok.AllArgsConstructor;

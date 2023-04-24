@@ -1,8 +1,10 @@
 package com.iyuriy.notification.dbworker.services;
 
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +31,13 @@ public class NewSchedulesService {
 
     private final ScheduleSenderService scheduleSenderService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public NewSchedulesService(FindNewScheduleService findNewScheduleService, ScheduleSenderService scheduleSenderService) {
+    public NewSchedulesService(FindNewScheduleService findNewScheduleService, ScheduleSenderService scheduleSenderService, ModelMapper modelMapper) {
         this.findNewScheduleService = findNewScheduleService;
         this.scheduleSenderService = scheduleSenderService;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -41,10 +46,14 @@ public class NewSchedulesService {
         log.info("Scheduler: the time is now {}", dateFormat.format(new Date()));
         List<ScheduleEvent> scheduleEvents = findNewScheduleService.findNewSchedules(Instant.from(ZonedDateTime.now()));
         for (ScheduleEvent event : scheduleEvents) {
-            ResponseEntity<HttpStatus> response = scheduleSenderService.sendToTgA(event);
+            ResponseEntity<HttpStatus> response = scheduleSenderService.sendToTgA(convertToScheduleDTO(event));
             if (response.getStatusCode() == HttpStatus.OK){
                 findNewScheduleService.updateWhenSendToAdapter(event);
             }
         }
+    }
+
+    private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent) {
+        return modelMapper.map(scheduleEvent, ScheduleEventDto.class);
     }
 }

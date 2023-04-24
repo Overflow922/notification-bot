@@ -1,6 +1,7 @@
 package com.iyuriy.notification.dbworker;
 
 import com.iyuriy.notification.common.models.ScheduleEvent;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -24,6 +25,9 @@ public class DbWorkerApplication {
         return new ScheduleEvent();
     }
 
-
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 }
