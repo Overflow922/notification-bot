@@ -3,8 +3,8 @@ package com.iyuriy.db_adapter.controllers;
 import com.iyuriy.db_adapter.services.ScheduleEventService;
 import com.iyuriy.db_adapter.util.ScheduleEventNotCreatedException;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
-import com.iyuriy.notification.common.models.ScheduleEvent;
-import org.modelmapper.ModelMapper;
+import com.iyuriy.notification.common.util.ScheduleEventConvertor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,11 +21,12 @@ public class ScheduleEventController {
 
     private final ScheduleEventService scheduleEventService;
 
-    private final ModelMapper modelMapper;
+    private final ScheduleEventConvertor convertor;
 
-    public ScheduleEventController(ScheduleEventService scheduleEventService, ModelMapper modelMapper) {
+    @Autowired
+    public ScheduleEventController(ScheduleEventService scheduleEventService, ScheduleEventConvertor convertor) {
         this.scheduleEventService = scheduleEventService;
-        this.modelMapper = modelMapper;
+        this.convertor = convertor;
     }
 
     @PostMapping
@@ -43,7 +44,7 @@ public class ScheduleEventController {
             }
             throw new ScheduleEventNotCreatedException(errorMsg.toString());
         }
-        scheduleEventService.save(convertToSchedule(scheduleEventDto));
+        scheduleEventService.save(convertor.DtoToModel(scheduleEventDto));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -51,15 +52,7 @@ public class ScheduleEventController {
     public List<ScheduleEventDto> getAllScheduleEvents() {
         return (scheduleEventService.findAll()
                 .stream()
-                .map(this::convertToScheduleDTO)
+                .map(convertor::ModelToDto)
                 .collect(Collectors.toList()));
-    }
-
-    private ScheduleEvent convertToSchedule(ScheduleEventDto scheduleEventDto) {
-        return modelMapper.map(scheduleEventDto, ScheduleEvent.class);
-    }
-
-    private ScheduleEventDto convertToScheduleDTO(ScheduleEvent scheduleEvent) {
-        return modelMapper.map(scheduleEvent, ScheduleEventDto.class);
     }
 }
