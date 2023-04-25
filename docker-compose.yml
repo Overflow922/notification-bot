@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_PASSWORD: mysecretpassword
     ports:
-      - 5432:5432
+      - 5433:5432
     networks:
       - notification
 
@@ -14,7 +14,7 @@ services:
     build:
       context: db-adapter
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/event-db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
@@ -27,7 +27,7 @@ services:
     build:
       context: db-worker
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/event-db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
@@ -38,7 +38,12 @@ services:
   tg-adapter:
     build:
       context: tg-adapter
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user-db
+        SPRING_DATASOURCE_USERNAME: postgres
+        SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
+      - db
       - db-worker
     networks:
       - notification

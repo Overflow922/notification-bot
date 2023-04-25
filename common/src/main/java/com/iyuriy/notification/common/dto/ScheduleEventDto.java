@@ -1,5 +1,6 @@
 package com.iyuriy.notification.common.dto;
 
+import com.iyuriy.notification.common.models.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,5 +14,5 @@ public final class ScheduleEventDto {
     private Instant timeToTrigger;
     private String notificationText;
     private String originalRq;
-    private String userId;
+    private User user;
 }

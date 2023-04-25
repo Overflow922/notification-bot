@@ -21,6 +21,9 @@ dependencies {
     api("org.apache.logging.log4j:log4j-api:2.19.0")
     api("org.apache.logging.log4j:log4j-core:2.19.0")
 
+    implementation("org.liquibase:liquibase-core")
+    runtimeOnly("org.postgresql:postgresql")
+
     implementation("org.modelmapper:modelmapper:3.1.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")

@@ -35,6 +35,7 @@ public final class ScheduleEvent {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column(name = "user_id")
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
