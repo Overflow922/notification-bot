@@ -1,9 +1,10 @@
 plugins {
+    `java-library`
     id("java")
 }
 
 group = "com.iyuriy.notification"
-version = "0.0.1=SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -23,11 +24,9 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation("org.mockito:mockito-all:1.10.19")
     testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    implementation("org.modelmapper:modelmapper:3.1.1")
 }
 
 tasks.getByName<Test>("test") {

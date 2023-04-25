@@ -1,6 +1,6 @@
 package com.iyuriy.notification.dbworker.services;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.dbworker.configs.RestEventSenderConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class RestScheduleSender implements ScheduleSenderService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> sendToDbA(ScheduleEvent event) {
+    public ResponseEntity<HttpStatus> sendToDbA(ScheduleEventDto event) {
         try {
             ResponseEntity<HttpStatus> entity = restTemplate.postForEntity(configuration.getUrlDbA(), event, HttpStatus.class);
             if (entity.getStatusCode() != HttpStatus.OK) {
@@ -38,7 +38,7 @@ public class RestScheduleSender implements ScheduleSenderService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> sendToTgA(ScheduleEvent event) {
+    public ResponseEntity<HttpStatus> sendToTgA(ScheduleEventDto event) {
         try {
             ResponseEntity<HttpStatus> entity = restTemplate.postForEntity(configuration.getUrlTgA(), event, HttpStatus.class);
             if (entity.getStatusCode() != HttpStatus.OK) {
