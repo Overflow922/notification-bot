@@ -2,28 +2,42 @@ package com.iyuriy.notification.services;
 
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
+import com.iyuriy.notification.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.dispatcher.JavaDispatcher;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.TimeZone;
+
 @Slf4j
 @Service
 @AllArgsConstructor
-public final class NotificationBotService extends TelegramLongPollingCommandBot {
+public class NotificationBotService extends TelegramLongPollingCommandBot {
 
     private static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
 
     private final NotificationBotConfiguration configs;
     private final ScheduleParser parser;
     private final RestEventSender sender;
+
+    private final UserRepository userRepository;
 
 
     @Override
@@ -36,11 +50,25 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
             log.info("incoming message from {}", chatId);
             try {
                 ScheduleEvent event = parser.parseEvent(text);
-                event.setUserId(chatId);
-                log.info("Sending event: {}", event);
-                sender.send(event);
+                Optional<User> user = userRepository.findByChatId(chatId);
+                log.info("Find user by userRepository: {}", user);
+
+                if (user.isEmpty()) {
+                    User newUser = createNewUser(chatId);
+                    log.info("new user saved to database: {}", newUser);
+                    chatId = newUser.getChatId();
+                } else {
+                    chatId = user.get().getChatId();
+                }
+
+                if (user.isPresent()) {
+                    event.setUserId(user.get().getChatId());
+                    log.info("Sending event: {}", event);
+                    sender.send(event);
+                }
+
             } catch (Exception e) {
-                log.error("Произошла ошибка.", e);
+                log.error("Error in processNonCommandUpdate", e);
                 // todo we can get exception here. Catch logic should be moved to separate method with exception handling
                 SendMessage outMess = new SendMessage();
                 outMess.setChatId(chatId);
@@ -48,6 +76,15 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
                 execute(outMess);
             }
         }
+    }
+
+    public User createNewUser(Long chatId) {
+        User newUser = new User();
+        newUser.setChatId(chatId);
+        newUser.setCreatedAt(Instant.now());
+        newUser.setTimeZone(Instant.now());//todo: переписать
+        userRepository.save(newUser);
+        return newUser;
     }
 
     public void notifyUser(ScheduleEventDto event) throws TelegramApiException {
@@ -66,4 +103,5 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
     public String getBotToken() {
         return configs.getBotToken();
     }
+
 }

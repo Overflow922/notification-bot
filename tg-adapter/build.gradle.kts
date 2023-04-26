@@ -14,10 +14,15 @@ repositories {
 
 val versions: Map<String, String> by rootProject.extra
 dependencies {
+
     implementation(project(":common"))
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+    implementation("org.liquibase:liquibase-core")
+    runtimeOnly("org.postgresql:postgresql")
 
     api("org.apache.logging.log4j:log4j-api:${versions["log4j"]}")
     api("org.apache.logging.log4j:log4j-core:${versions["log4j"]}")
