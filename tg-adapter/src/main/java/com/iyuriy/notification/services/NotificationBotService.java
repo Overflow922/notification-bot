@@ -1,6 +1,5 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
@@ -12,7 +11,6 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @Service
@@ -41,20 +39,18 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
                 sender.send(event);
             } catch (Exception e) {
                 log.error("Произошла ошибка.", e);
-                // todo we can get exception here. Catch logic should be moved to separate method with exception handling
-                SendMessage outMess = new SendMessage();
-                outMess.setChatId(chatId);
-                outMess.setText(ERROR_CONVERTING_COMMAND);
-                execute(outMess);
+                notifyUser(ERROR_CONVERTING_COMMAND, chatId);
             }
         }
     }
 
-    public void notifyUser(ScheduleEventDto event) throws TelegramApiException {
-        SendMessage message = new SendMessage();
-        message.setChatId(event.getUserId().toString());
-        message.setText(event.getNotificationText());
-        execute(message);
+    public void notifyUser(String text, Long chatId) {
+        SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
+        try {
+            execute(message);
+        } catch (Exception e) {
+            log.error("Не удалось отправить сообщение {}", message, e);
+        }
     }
 
     @Override
