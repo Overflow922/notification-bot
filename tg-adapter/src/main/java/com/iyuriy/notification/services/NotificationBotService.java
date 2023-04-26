@@ -32,7 +32,7 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message inMess = update.getMessage();
             String text = inMess.getText();
-            String chatId = inMess.getChatId().toString();
+            Long chatId = inMess.getChatId();
             log.info("incoming message from {}", chatId);
             try {
                 ScheduleEvent event = parser.parseEvent(text);
@@ -52,7 +52,7 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
 
     public void notifyUser(ScheduleEventDto event) throws TelegramApiException {
         SendMessage message = new SendMessage();
-        message.setChatId(event.getUserId());
+        message.setChatId(event.getUserId().toString());
         message.setText(event.getNotificationText());
         execute(message);
     }

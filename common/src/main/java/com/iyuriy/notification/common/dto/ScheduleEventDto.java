@@ -13,5 +13,5 @@ public final class ScheduleEventDto {
     private Instant timeToTrigger;
     private String notificationText;
     private String originalRq;
-    private String userId;
+    private Long userId;
 }

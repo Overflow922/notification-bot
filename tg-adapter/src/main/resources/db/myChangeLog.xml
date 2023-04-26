@@ -6,8 +6,8 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="1" author="temychpp">
-        <comment>Creating common tables</comment>
-        <sqlFile path="changelog/01/create_schedule_event.sql"
+        <comment>Creating table user-db</comment>
+        <sqlFile path="changelog/01/users.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

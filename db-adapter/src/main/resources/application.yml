@@ -7,5 +7,3 @@ spring:
 
 
   liquibase.change-log: db/myChangeLog.xml
-
-

@@ -35,6 +35,6 @@ public final class ScheduleEvent {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "user_id", unique = true)
+    private Long userId;
 }

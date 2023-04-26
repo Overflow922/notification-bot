@@ -4,3 +4,13 @@ telegram:
     token: '5806045769:AAGWnJbCusIKOK1SSEAWf0xwpwMb6Io5ySQ'
 db-adapter-rest:
   url: http://db-adapter:8080/schedule
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user-db
+    username: postgres
+    password: mysecretpassword
+    driver-class-name: org.postgresql.Driver
+
+
+  liquibase.change-log: db/myChangeLog.xml
