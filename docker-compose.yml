@@ -1,12 +1,22 @@
 version: '3.7'
 services:
-  db:
-    container_name: db
+  event-db:
+      container_name: event-db
+      image: postgres
+      environment:
+        POSTGRES_PASSWORD: mysecretpassword
+      ports:
+        - 5433:5432
+      networks:
+        - notification
+
+  user-db:
+    container_name: user-db
     image: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
     ports:
-      - 5433:5432
+      - 5434:5432
     networks:
       - notification
 
@@ -14,12 +24,11 @@ services:
     build:
       context: db-adapter
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/event-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://event-db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
-      - db
-      - tg-adapter
+      - event-db
     networks:
       - notification
 
@@ -27,11 +36,11 @@ services:
     build:
       context: db-worker
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/event-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://event-db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
-      - db
+      - event-db
     networks:
       - notification
 
@@ -39,12 +48,11 @@ services:
     build:
       context: tg-adapter
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user-db
+        SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/postgres
         SPRING_DATASOURCE_USERNAME: postgres
         SPRING_DATASOURCE_PASSWORD: mysecretpassword
     depends_on:
-      - db
-      - db-worker
+      - user-db
     networks:
       - notification
 

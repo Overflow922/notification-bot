@@ -7,23 +7,7 @@
 
     <changeSet id="1" author="temychpp">
         <comment>Creating common tables</comment>
-        <sqlFile path="changelog/01/event-db.sql"
-                 relativeToChangelogFile="true"
-                 splitStatements="true"
-                 stripComments="true"/>
-    </changeSet>
-
-    <changeSet id="2" author="Yuriy">
-        <comment>Creating common tables</comment>
-        <sqlFile path="changelog/01/alter_schedule_event.sql"
-                 relativeToChangelogFile="true"
-                 splitStatements="true"
-                 stripComments="true"/>
-    </changeSet>
-
-    <changeSet id="3" author="temychpp">
-        <comment>Change table schedule_event</comment>
-        <sqlFile path="changelog/01/alter_2_schedule_event.sql"
+        <sqlFile path="changelog/01/create_schedule_event.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

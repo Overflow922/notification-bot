@@ -2,7 +2,6 @@ package com.iyuriy.notification.services;
 
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
-import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
 import lombok.AllArgsConstructor;
@@ -33,20 +32,18 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message inMess = update.getMessage();
             String text = inMess.getText();
-//            String chatId = inMess.getChatId().toString();
             Long chatId = inMess.getChatId();
-
             log.info("incoming message from {}", chatId);
             try {
                 ScheduleEvent event = parser.parseEvent(text);
-                event.setUser(chatId); // event.setUserId(chatId);
+                event.setUserId(chatId);
                 log.info("Sending event: {}", event);
                 sender.send(event);
             } catch (Exception e) {
                 log.error("Произошла ошибка.", e);
                 // todo we can get exception here. Catch logic should be moved to separate method with exception handling
                 SendMessage outMess = new SendMessage();
-                outMess.setChatId(String.valueOf(chatId)); //outMess.setChatId(chatId);
+                outMess.setChatId(chatId);
                 outMess.setText(ERROR_CONVERTING_COMMAND);
                 execute(outMess);
             }
@@ -55,7 +52,7 @@ public final class NotificationBotService extends TelegramLongPollingCommandBot 
 
     public void notifyUser(ScheduleEventDto event) throws TelegramApiException {
         SendMessage message = new SendMessage();
-        message.setChatId(event.getUser().toString());
+        message.setChatId(event.getUserId().toString());
         message.setText(event.getNotificationText());
         execute(message);
     }
