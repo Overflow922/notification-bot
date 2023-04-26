@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
 }
 
+val versions: Map<String, String> by rootProject.extra
 dependencies {
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -22,17 +23,17 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     runtimeOnly("org.postgresql:postgresql")
 
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    annotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
+    testCompileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    testAnnotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${versions["junit"]}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
-    implementation("org.modelmapper:modelmapper:3.1.1")
+    implementation("org.hibernate.validator:hibernate-validator:${versions["hibernate"]}")
+    implementation("org.modelmapper:modelmapper:${versions["model-mapper"]}")
 }
 
 tasks.getByName<Test>("test") {

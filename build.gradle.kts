@@ -62,6 +62,18 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
+extra["versions"] = mapOf(
+    "lombok" to "1.18.26",
+    "log4j" to "2.20.0",
+    "model-mapper" to "3.1.1",
+    "junit" to "5.9.2",
+    "assertj" to "3.24.2",
+    "mockito" to "1.10.19",
+    "mockito-junit" to "5.2.0",
+    "telegrambots" to "6.5.0",
+    "hibernate" to "8.0.0.Final"
+)
+
 //configurations.all {
 //    resolutionStrategy {
 //// Fail eagerly on version conflict (includes transitive dependencies)

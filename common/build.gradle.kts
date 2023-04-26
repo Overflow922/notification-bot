@@ -10,23 +10,24 @@ repositories {
     mavenCentral()
 }
 
+val versions: Map<String, String> by rootProject.extra
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    annotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
+    testCompileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    testAnnotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
 
     implementation("javax.persistence:javax.persistence-api:2.2")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
-    testImplementation("org.assertj:assertj-core:3.23.1")
-    testImplementation("org.mockito:mockito-all:1.10.19")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${versions["junit"]}")
+    testImplementation("org.assertj:assertj-core:${versions["assertj"]}")
+    testImplementation("org.mockito:mockito-all:${versions["mockito"]}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${versions["mockito-junit"]}")
 
-    implementation("org.modelmapper:modelmapper:3.1.1")
+    implementation("org.modelmapper:modelmapper:${versions["model-mapper"]}")
 }
 
 tasks.getByName<Test>("test") {

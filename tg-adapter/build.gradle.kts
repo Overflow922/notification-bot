@@ -11,36 +11,34 @@ version = "0.0.1-SNAPSHOT"
 repositories {
     mavenCentral()
 }
-dependencies {
 
+val versions: Map<String, String> by rootProject.extra
+dependencies {
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
-    api("org.apache.logging.log4j:log4j-api:2.19.0")
-    api("org.apache.logging.log4j:log4j-core:2.19.0")
+    api("org.apache.logging.log4j:log4j-api:${versions["log4j"]}")
+    api("org.apache.logging.log4j:log4j-core:${versions["log4j"]}")
 
-    implementation("org.liquibase:liquibase-core")
-    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.modelmapper:modelmapper:${versions["model-mapper"]}")
 
-    implementation("org.modelmapper:modelmapper:3.1.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${versions["junit"]}")
+    testImplementation("org.assertj:assertj-core:${versions["assertj"]}")
+    testImplementation("org.mockito:mockito-all:${versions["mockito"]}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${versions["mockito-junit"]}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
-    testImplementation("org.assertj:assertj-core:3.23.1")
-    testImplementation("org.mockito:mockito-all:1.10.19")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    compileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    annotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
+    testCompileOnly("org.projectlombok:lombok:${versions["lombok"]}")
+    testAnnotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
 
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
-
-    implementation("org.telegram:telegrambots:6.5.0")
-    implementation("org.telegram:telegrambotsextensions:6.5.0")
+    implementation("org.telegram:telegrambots:${versions["telegrambots"]}")
+    implementation("org.telegram:telegrambotsextensions:${versions["telegrambots"]}")
 }
 
 tasks.getByName<Test>("test") {
