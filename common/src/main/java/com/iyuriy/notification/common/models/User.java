@@ -27,6 +27,6 @@ public final class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column(name = "chat_id")
+    @Column(name = "chat_id", unique = true)
     private Long chatId;
 }

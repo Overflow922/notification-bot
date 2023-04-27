@@ -6,5 +6,5 @@ CREATE TABLE Schedule_event
     original_rq        varchar(255) NOT NULL,
     is_sent_to_adapter TIMESTAMPTZ,
     created_at         TIMESTAMPTZ,
-    user_id            bigint UNIQUE
+    user_id            bigint
 );

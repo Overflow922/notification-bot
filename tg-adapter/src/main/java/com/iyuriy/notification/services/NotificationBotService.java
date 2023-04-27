@@ -9,8 +9,6 @@ import com.iyuriy.notification.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -20,11 +18,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Collections;
+import java.time.LocalDate;
 import java.util.Optional;
-import java.util.TimeZone;
 
 @Slf4j
 @Service
@@ -39,7 +34,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
     private final UserRepository userRepository;
 
-
+    @Transactional
     @Override
     @SneakyThrows
     public void processNonCommandUpdate(Update update) {
@@ -50,8 +45,8 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             log.info("incoming message from {}", chatId);
             try {
                 ScheduleEvent event = parser.parseEvent(text);
+
                 Optional<User> user = userRepository.findByChatId(chatId);
-                log.info("Find user by userRepository: {}", user);
 
                 if (user.isEmpty()) {
                     User newUser = createNewUser(chatId);
@@ -61,11 +56,9 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
                     chatId = user.get().getChatId();
                 }
 
-                if (user.isPresent()) {
-                    event.setUserId(user.get().getChatId());
-                    log.info("Sending event: {}", event);
-                    sender.send(event);
-                }
+                event.setUserId(chatId);
+                log.info("Sending event: {}", event);
+                sender.send(event);
 
             } catch (Exception e) {
                 log.error("Error in processNonCommandUpdate", e);
@@ -78,11 +71,13 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         }
     }
 
+    @Transactional
     public User createNewUser(Long chatId) {
-        User newUser = new User();
-        newUser.setChatId(chatId);
-        newUser.setCreatedAt(Instant.now());
-        newUser.setTimeZone(Instant.now());//todo: переписать
+        User newUser = User.builder()
+                .chatId(chatId)
+                .timeZone(Instant.now())
+                .createdAt(Instant.now())
+                .build();
         userRepository.save(newUser);
         return newUser;
     }

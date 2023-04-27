@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +35,6 @@ public final class ScheduleEvent {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "user_id")
     private Long userId;
 }
