@@ -15,7 +15,7 @@ class ScheduleParserTest {
 
     @Test
     void parse_add_1615_text() {
-        ScheduleEvent event = PARSER.parseEvent("add 16:15 text");
+        ScheduleEvent event = PARSER.parseEvent("add 16:15 text", ZoneId.systemDefault());
         assertNotNull(event);
 
         // check fields

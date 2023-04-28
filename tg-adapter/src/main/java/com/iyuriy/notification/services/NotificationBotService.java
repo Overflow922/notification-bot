@@ -19,6 +19,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -44,17 +46,13 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             Long chatId = inMess.getChatId();
             log.info("incoming message from {}", chatId);
             try {
-                ScheduleEvent event = parser.parseEvent(text);
+                User user = userRepository.findByChatId(chatId);
 
-                Optional<User> user = userRepository.findByChatId(chatId);
-
-                if (user.isEmpty()) {
-                    User newUser = createNewUser(chatId);
-                    log.info("new user saved to database: {}", newUser);
-                    chatId = newUser.getChatId();
-                } else {
-                    chatId = user.get().getChatId();
+                if (user == null) {
+                    user = createNewUser(chatId);
+                    log.info("new user saved to database: {}", user);
                 }
+                ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
 
                 event.setUserId(chatId);
                 log.info("Sending event: {}", event);
@@ -73,13 +71,14 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
     @Transactional
     public User createNewUser(Long chatId) {
-        User newUser = User.builder()
+
+        User user = User.builder()
                 .chatId(chatId)
-                .timeZone(Instant.now())
+                .timeZone(ZoneId.of("Europe/Moscow"))
                 .createdAt(Instant.now())
                 .build();
-        userRepository.save(newUser);
-        return newUser;
+        userRepository.save(user);
+        return user;
     }
 
     public void notifyUser(ScheduleEventDto event) throws TelegramApiException {

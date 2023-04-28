@@ -1,9 +1,11 @@
 package com.iyuriy.notification.common.models;
 
+import com.iyuriy.notification.common.util.ZoneIdConverter;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @NoArgsConstructor
@@ -21,8 +23,9 @@ public final class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Convert(converter = ZoneIdConverter.class)
     @Column(name = "time_zone")
-    private Instant timeZone;
+    private ZoneId timeZone;
 
     @Column(name = "created_at")
     private Instant createdAt;
