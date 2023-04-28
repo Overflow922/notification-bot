@@ -23,7 +23,7 @@ public class NotifyUserController {
     public ResponseEntity<Void> notifyUser(@RequestBody ScheduleEventDto event) {
         ResponseEntity<Void> result;
         try {
-            service.notifyUser(event);
+            service.notifyUser(event.getNotificationText(), event.getUserId());
             result = ResponseEntity.ok().build();
             log.info("Событие успешно отправлено пользователю: {}", event);
         } catch (Exception e) {
