@@ -7,7 +7,7 @@
 
     <changeSet id="1" author="temychpp">
         <comment>Creating table user-db</comment>
-        <sqlFile path="changelog/01/users.sql"
+        <sqlFile path="changelog/01/create_users.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

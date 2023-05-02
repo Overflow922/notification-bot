@@ -6,7 +6,7 @@ services:
       environment:
         POSTGRES_PASSWORD: mysecretpassword
       ports:
-        - 5433:5432
+        - 5432:5432
       networks:
         - notification
 
@@ -16,7 +16,7 @@ services:
     environment:
       POSTGRES_PASSWORD: mysecretpassword
     ports:
-      - 5434:5432
+      - 5433:5432
     networks:
       - notification
 

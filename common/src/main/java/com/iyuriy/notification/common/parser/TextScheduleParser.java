@@ -1,6 +1,7 @@
 package com.iyuriy.notification.common.parser;
 
 import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.models.User;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -19,14 +20,14 @@ public class TextScheduleParser implements ScheduleParser {
      * @return -
      */
     // add 16:45 call boss
-    public ScheduleEvent parseEvent(String text) {
+    public ScheduleEvent parseEvent(String text, ZoneId userZoneId) {
         try {
             String[] strings = text.split(" ", 3);
             String time = strings[1];
             LocalDateTime timeToTrigger = parseTime(time);
             return ScheduleEvent.builder()
                     .notificationText(strings[2])
-                    .timeToTrigger(ZonedDateTime.of(timeToTrigger, ZoneId.systemDefault()).toInstant())
+                    .timeToTrigger(ZonedDateTime.of(timeToTrigger, userZoneId).toInstant())
                     .originalRq(text)
                     .build();
         } catch (RuntimeException e) {
