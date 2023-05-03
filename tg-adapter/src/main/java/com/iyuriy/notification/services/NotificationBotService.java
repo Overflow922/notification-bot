@@ -1,6 +1,7 @@
 package com.iyuriy.notification.services;
 
 import com.iyuriy.notification.command.CommandContainer;
+import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
 import com.iyuriy.notification.repositories.UserRepository;
@@ -14,14 +15,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static com.iyuriy.notification.common.parser.UserEventType.NO;
+import java.time.Instant;
+import java.time.ZoneId;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class NotificationBotService extends TelegramLongPollingCommandBot {
 
-    public static String COMMAND_PREFIX = "/";
     public static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
 
     private final NotificationBotConfiguration configs;
@@ -40,49 +41,48 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             Message inMess = update.getMessage();
             String text = inMess.getText();
             Long chatId = inMess.getChatId();
-            log.info("incoming message from {}", chatId);
+            log.info("Входящее сообщение incoming message from {}", chatId);
 
-//            try {
-//                User user = userRepository.findByChatId(chatId);
-//
-//                if (user == null) {
-//                    user = createNewUser(chatId);
-//                    log.info("new user saved to database: {}", user);
+            try {
+                User user = userRepository.findByChatId(chatId);
+
+                if (user == null) {
+                    user = createNewUser(chatId);
+                    log.info("new user saved to database: {}", user);
+                }
+
+                String commandIdentifier = text.split(" ")[0].toLowerCase();
+                String result = commandContainer.findCommand(commandIdentifier).execute(update);
+                notifyUser(result, chatId);
+//                }
+//                else {
+//                    result=  commandContainer.findCommand(NO.getUserEventType()).execute(update);
 //                }
 
-                String result;
-                if (text.startsWith(COMMAND_PREFIX)) {
-                    String commandIdentifier = text.split(" ")[0].toLowerCase();
-                    result= commandContainer.findCommand(commandIdentifier).execute(update);
-                } else {
-                    result=  commandContainer.findCommand(NO.getUserEventType()).execute(update);
-                }
-                notifyUser(result, chatId);
 
 //                ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
 //
 //                event.setUserId(chatId);
 //                log.info("Sending event: {}", event);
 //                sender.send(event);
-//            } catch (Exception e) {
-//
-//                log.error("Произошла ошибка.", e);
-//                notifyUser(ERROR_CONVERTING_COMMAND, chatId);
-//            }
+
+            } catch (Exception e) {
+                log.error("Произошла ошибка.", e);
+                notifyUser(ERROR_CONVERTING_COMMAND, chatId);
+            }
         }
     }
 
-//    @Transactional
-//    public User createNewUser(Long chatId) {
-//
-//        User user = User.builder()
-//                .chatId(chatId)
-//                .timeZone(ZoneId.of("Europe/Moscow"))
-//                .createdAt(Instant.now())
-//                .build();
-//        userRepository.save(user);
-//        return user;
-//    }
+    @Transactional
+    public User createNewUser(Long chatId) {
+        User user = User.builder()
+                .chatId(chatId)
+                .timeZone(ZoneId.of("Europe/Moscow"))
+                .createdAt(Instant.now())
+                .build();
+        userRepository.save(user);
+        return user;
+    }
 
     public void notifyUser(String text, Long chatId) {
         SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
