@@ -1,6 +1,6 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.command.CommandContainer;
 import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
@@ -16,23 +16,22 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class NotificationBotService extends TelegramLongPollingCommandBot {
 
-    private static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
+    public static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
 
     private final NotificationBotConfiguration configs;
     private final ScheduleParser parser;
     private final RestEventSender sender;
 
     private final UserRepository userRepository;
+
+    private final CommandContainer commandContainer;
 
     @Transactional
     @Override
@@ -42,7 +41,8 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             Message inMess = update.getMessage();
             String text = inMess.getText();
             Long chatId = inMess.getChatId();
-            log.info("incoming message from {}", chatId);
+            log.info("Входящее сообщение incoming message from {}", chatId);
+
             try {
                 User user = userRepository.findByChatId(chatId);
 
@@ -50,13 +50,23 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
                     user = createNewUser(chatId);
                     log.info("new user saved to database: {}", user);
                 }
-                ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
 
-                event.setUserId(chatId);
-                log.info("Sending event: {}", event);
-                sender.send(event);
+                String commandIdentifier = text.split(" ")[0].toLowerCase();
+                String result = commandContainer.findCommand(commandIdentifier).execute(update);
+                notifyUser(result, chatId);
+//                }
+//                else {
+//                    result=  commandContainer.findCommand(NO.getUserEventType()).execute(update);
+//                }
+
+
+//                ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
+//
+//                event.setUserId(chatId);
+//                log.info("Sending event: {}", event);
+//                sender.send(event);
+
             } catch (Exception e) {
-
                 log.error("Произошла ошибка.", e);
                 notifyUser(ERROR_CONVERTING_COMMAND, chatId);
             }
@@ -65,7 +75,6 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
     @Transactional
     public User createNewUser(Long chatId) {
-
         User user = User.builder()
                 .chatId(chatId)
                 .timeZone(ZoneId.of("Europe/Moscow"))
