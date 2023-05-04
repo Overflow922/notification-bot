@@ -35,5 +35,4 @@ public class StopCommand implements Command {
         log.info("Пользователь удален из базы");
         return STOP_MESSAGE;
     }
-
 }

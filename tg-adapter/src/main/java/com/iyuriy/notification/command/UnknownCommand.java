@@ -21,4 +21,3 @@ public class UnknownCommand implements Command {
         return UNKNOWN_MESSAGE;
     }
 }
-

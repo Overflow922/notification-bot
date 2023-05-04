@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class NotificationBotService extends TelegramLongPollingCommandBot {
-    // TelegramLongPollingCommandBot
+
     public static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
 
     private final NotificationBotConfiguration configs;
@@ -55,7 +55,6 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
                 String commandIdentifier = text.split(" ")[0].toLowerCase();
                 String result = commandContainer.findCommand(commandIdentifier).execute(update);
                 notifyUser(result, chatId);
-
             } catch (Exception e) {
                 log.error("Произошла ошибка.", e);
                 notifyUser(ERROR_CONVERTING_COMMAND, chatId);
