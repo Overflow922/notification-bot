@@ -16,15 +16,11 @@ import static com.iyuriy.notification.services.NotificationBotService.ERROR_CONV
 @Component
 public class TimeZoneCommand implements Command {
 
-
     private final UserRepository userRepository;
 
-    public static final String TIME_ZONE_DEFAULT =
-            "Временная зона 'По умолчанию':\n" +
-                    "Europe/Moscow\n" +
-                    "Введи:\n" +
-                    "/timezone Europe/Paris\n" +
-                    "/timezone America/Los_Angeles\n";
+    public static final String CURRENT_TIME_ZONE = """
+             Ваша временная зона:
+             """;
 
     public static final String TIME_ZONE_CHANGED =
             "Временная зона изменена!";
@@ -34,14 +30,13 @@ public class TimeZoneCommand implements Command {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public String execute(Update update) {
 
         String text = update.getMessage().getText();
 
         if (text.equals("/timezone")) {
-            return TIME_ZONE_DEFAULT;
+            return CURRENT_TIME_ZONE+ getUserTimeZone(update.getMessage().getChatId());
         }
 
         String timeZone = text.split(" ", 2)[1];
@@ -51,7 +46,6 @@ public class TimeZoneCommand implements Command {
         } else return ERROR_CONVERTING_COMMAND;
     }
 
-
     @Transactional
     public void addTimeZone(Long chatId, String timeZone) {
 
@@ -59,5 +53,10 @@ public class TimeZoneCommand implements Command {
         user.setTimeZone(ZoneId.of(timeZone));
         log.info("User changed ZoneId: {}", user);
         userRepository.save(user);
+    }
+
+    public String getUserTimeZone(Long chatId) {
+        User user = userRepository.findByChatId(chatId);
+        return user.getTimeZone().toString();
     }
 }

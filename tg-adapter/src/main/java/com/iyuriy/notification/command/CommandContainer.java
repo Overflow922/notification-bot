@@ -12,13 +12,13 @@ public class CommandContainer {
     private final ImmutableMap<String, Command> commandMap;
     private final Command unknownCommand;
 
-    public CommandContainer(UserRepository userRepository) {
+    public CommandContainer(UserRepository userRepository, StopCommand stopCommand, AddCommand addCommand) {
 
         commandMap = ImmutableMap.<String, Command>builder()
                 .put(START.getUserEventType(), new StartCommand())
-                .put(STOP.getUserEventType(), new StopCommand(userRepository))
+                .put(STOP.getUserEventType(), stopCommand)
                 .put(HELP.getUserEventType(), new HelpCommand())
-                .put(ADD.getUserEventType(), new AddCommand())
+                .put(ADD.getUserEventType(), addCommand)
                 .put(TIME_ZONE.getUserEventType(), new TimeZoneCommand(userRepository))
                 .build();
         unknownCommand = new UnknownCommand();

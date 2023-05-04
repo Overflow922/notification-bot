@@ -9,5 +9,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByChatId (Long chatId);
 
-    User deleteByChatId (Long chatId);
+    void deleteByChatId (Long chatId);
 }
