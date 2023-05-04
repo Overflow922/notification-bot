@@ -1,9 +1,11 @@
 package com.iyuriy.notification.command;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Component
+import static com.iyuriy.notification.common.parser.UserEventType.START;
+
+@Service
 public class StartCommand implements Command {
 
     public final static String START_MESSAGE = """
@@ -16,14 +18,14 @@ public class StartCommand implements Command {
     }
 
     @Override
+    public String commandType() {
+        return START.getUserEventType();
+    }
+
+    @Override
     public String execute(Update update) {
         String name = update.getMessage().getChat().getFirstName();
-       // String location = String.valueOf(update.getMessage().getChat().getLocation());
 
-      //  String latitude = String.valueOf(update.getMessage().getChat().  getLatitude());
-        //  String longitude = String.valueOf(update.getMessage().getLocation().getLongitude());
-
-//        String location = String.valueOf(update.getMessage().getLocation());
         return String.format("""
                         Привет, %s!\s
                         %s

@@ -4,16 +4,17 @@ import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.ZoneId;
 
+import static com.iyuriy.notification.common.parser.UserEventType.TIME_ZONE;
 import static com.iyuriy.notification.services.NotificationBotService.ERROR_CONVERTING_COMMAND;
 
 @Slf4j
-@Component
+@Service
 public class TimeZoneCommand implements Command {
 
     private final UserRepository userRepository;
@@ -28,6 +29,11 @@ public class TimeZoneCommand implements Command {
     @Autowired
     public TimeZoneCommand(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public String commandType() {
+        return TIME_ZONE.getUserEventType();
     }
 
     @Override

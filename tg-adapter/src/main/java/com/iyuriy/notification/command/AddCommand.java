@@ -7,27 +7,34 @@ import com.iyuriy.notification.repositories.UserRepository;
 import com.iyuriy.notification.services.RestEventSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static com.iyuriy.notification.common.parser.UserEventType.ADD;
+
 @Slf4j
-@Component
+@Service
 public class AddCommand implements Command {
 
     private final static String ANSWER = "Событие запланировано";
 
-    @Autowired
-    private ScheduleParser parser;
+    private final ScheduleParser parser;
+
+    private final RestEventSender sender;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private RestEventSender sender;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    public AddCommand() {
+    public AddCommand(ScheduleParser parser, RestEventSender sender, UserRepository userRepository) {
+        this.parser = parser;
+        this.sender = sender;
+        this.userRepository = userRepository;
     }
 
+    @Override
+    public String commandType() {
+        return ADD.getUserEventType();
+    }
 
     @Override
     public String execute(Update update) {

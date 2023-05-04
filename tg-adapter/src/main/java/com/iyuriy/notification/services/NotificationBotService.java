@@ -77,7 +77,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     public void notifyUser(String text, Long chatId) {
         SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
         try {
-            setButtons(message); //
+            setButtons(message);
             execute(message);
         } catch (Exception e) {
             log.error("Не удалось отправить сообщение {}", message, e);
@@ -91,15 +91,22 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
         List<KeyboardRow> keyboard = new ArrayList<>();
+
         KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(new KeyboardButton("/start"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
         keyboardFirstRow.add(new KeyboardButton("/timezone"));
         keyboardFirstRow.add(new KeyboardButton("/stop"));
+
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Moscow"));
+        keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Paris"));
+        keyboardSecondRow.add(new KeyboardButton("/add 15:00 test"));
+
         keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
-
-
 
     @Override
     public String getBotUsername() {
@@ -110,5 +117,4 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     public String getBotToken() {
         return configs.getBotToken();
     }
-
 }
