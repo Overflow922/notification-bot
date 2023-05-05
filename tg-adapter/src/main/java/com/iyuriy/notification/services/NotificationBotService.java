@@ -1,8 +1,7 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.command.CommandContainer;
 import com.iyuriy.notification.common.models.User;
-import com.iyuriy.notification.common.parser.ScheduleParser;
 import com.iyuriy.notification.configs.NotificationBotConfiguration;
 import com.iyuriy.notification.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -14,25 +13,27 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class NotificationBotService extends TelegramLongPollingCommandBot {
 
-    private static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
+    public static final String ERROR_CONVERTING_COMMAND = "Не удалось обработать запрос. Проверьте формат.";
 
     private final NotificationBotConfiguration configs;
-    private final ScheduleParser parser;
-    private final RestEventSender sender;
 
     private final UserRepository userRepository;
+
+    private final CommandContainer commandContainer;
 
     @Transactional
     @Override
@@ -42,21 +43,19 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             Message inMess = update.getMessage();
             String text = inMess.getText();
             Long chatId = inMess.getChatId();
-            log.info("incoming message from {}", chatId);
+            log.info("Входящее сообщение incoming message from {}", chatId);
+
             try {
                 User user = userRepository.findByChatId(chatId);
-
                 if (user == null) {
                     user = createNewUser(chatId);
-                    log.info("new user saved to database: {}", user);
+                    log.info("New user saved to database: {}", user);
                 }
-                ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
 
-                event.setUserId(chatId);
-                log.info("Sending event: {}", event);
-                sender.send(event);
+                String commandIdentifier = text.split(" ")[0].toLowerCase();
+                String result = commandContainer.findCommand(commandIdentifier).execute(update);
+                notifyUser(result, chatId);
             } catch (Exception e) {
-
                 log.error("Произошла ошибка.", e);
                 notifyUser(ERROR_CONVERTING_COMMAND, chatId);
             }
@@ -65,7 +64,6 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
     @Transactional
     public User createNewUser(Long chatId) {
-
         User user = User.builder()
                 .chatId(chatId)
                 .timeZone(ZoneId.of("Europe/Moscow"))
@@ -78,11 +76,35 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     public void notifyUser(String text, Long chatId) {
         SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
         try {
+            setButtons(message);
             execute(message);
         } catch (Exception e) {
             log.error("Не удалось отправить сообщение {}", message, e);
         }
+    }
 
+    public synchronized void setButtons(SendMessage sendMessage) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(new KeyboardButton("/start"));
+        keyboardFirstRow.add(new KeyboardButton("/help"));
+        keyboardFirstRow.add(new KeyboardButton("/timezone"));
+        keyboardFirstRow.add(new KeyboardButton("/stop"));
+
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Moscow"));
+        keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Paris"));
+        keyboardSecondRow.add(new KeyboardButton("/add 15:00 test"));
+
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+        replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
     @Override
@@ -94,5 +116,4 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     public String getBotToken() {
         return configs.getBotToken();
     }
-
 }

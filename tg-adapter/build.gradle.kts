@@ -24,6 +24,8 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     runtimeOnly("org.postgresql:postgresql")
 
+    implementation("com.google.guava:guava:31.1-jre")
+
     api("org.apache.logging.log4j:log4j-api:${versions["log4j"]}")
     api("org.apache.logging.log4j:log4j-core:${versions["log4j"]}")
 
