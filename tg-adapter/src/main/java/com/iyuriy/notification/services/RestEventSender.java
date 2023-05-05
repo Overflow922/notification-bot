@@ -16,7 +16,7 @@ public class RestEventSender implements EventSender {
     private final RestEventSenderConfiguration configuration;
 
     @Override
-    public boolean send(ScheduleEvent event, String command ) {
+    public boolean send(ScheduleEvent event) {
         ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrl(), event, Void.class);
 
         return entity.getStatusCode() == HttpStatus.OK;
