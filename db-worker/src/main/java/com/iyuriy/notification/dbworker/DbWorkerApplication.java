@@ -20,7 +20,6 @@ public class DbWorkerApplication {
         SpringApplication.run(DbWorkerApplication.class, args);
     }
 
-
     @Bean
     public ScheduleEvent scheduleEvent() {
         return new ScheduleEvent();
@@ -32,8 +31,7 @@ public class DbWorkerApplication {
     }
 
     @Bean
-    public ScheduleEventConvertor scheduleEventConvertor(ModelMapper modelMapper){
+    public ScheduleEventConvertor scheduleEventConvertor(ModelMapper modelMapper) {
         return new ScheduleEventConvertor(modelMapper);
     }
-
 }

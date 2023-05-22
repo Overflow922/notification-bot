@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByChatId (Long chatId);
+    User findUserByChatId(Long chatId);
 
-    void deleteByChatId (Long chatId);
+    void deleteUserByChatId(Long chatId);
 }

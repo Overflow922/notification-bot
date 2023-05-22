@@ -56,14 +56,14 @@ public class TimeZoneCommand implements Command {
     @Transactional
     public void addTimeZone(Long chatId, String timeZone) {
 
-        User user = userRepository.findByChatId(chatId);
+        User user = userRepository.findUserByChatId(chatId);
         user.setTimeZone(ZoneId.of(timeZone));
         log.info("User changed ZoneId: {}", user);
         userRepository.save(user);
     }
 
     public String getUserTimeZone(Long chatId) {
-        User user = userRepository.findByChatId(chatId);
+        User user = userRepository.findUserByChatId(chatId);
         return user.getTimeZone().toString();
     }
 }

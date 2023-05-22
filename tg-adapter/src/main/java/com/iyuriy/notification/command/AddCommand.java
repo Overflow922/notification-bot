@@ -16,7 +16,7 @@ import static com.iyuriy.notification.common.parser.UserEventType.ADD;
 @Service
 public class AddCommand implements Command {
 
-    private final static String ANSWER = "Событие запланировано";
+    private final static String ANSWER = "Событие запланировано: ";
 
     private final ScheduleParser parser;
 
@@ -41,13 +41,13 @@ public class AddCommand implements Command {
         String text = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
 
-        User user = userRepository.findByChatId(chatId);
+        User user = userRepository.findUserByChatId(chatId);
 
         ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
         event.setUserId(chatId);
         log.info("Sending event: {}", event);
-        sender.send(event);
+        sender.sendEvent(event);
 
-        return ANSWER;
+        return ANSWER + text;
     }
 }
