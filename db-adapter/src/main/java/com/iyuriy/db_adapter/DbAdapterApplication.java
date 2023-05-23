@@ -26,5 +26,4 @@ public class DbAdapterApplication {
     public ScheduleEventConvertor scheduleEventConvertor(ModelMapper modelMapper){
         return new ScheduleEventConvertor(modelMapper);
     }
-
 }

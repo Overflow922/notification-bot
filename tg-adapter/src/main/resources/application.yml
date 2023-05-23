@@ -3,7 +3,10 @@ telegram:
     name: 'notification-dev'
     token: '5806045769:AAGWnJbCusIKOK1SSEAWf0xwpwMb6Io5ySQ'
 db-adapter-rest:
-  url: http://db-adapter:8080/schedule
+  url-schedule: http://db-adapter:8080/schedule
+  url-user-events: http://db-adapter:8080/user-events
+  url-user-delete: http://db-adapter:8080/user-delete
+  url-all-events: http://db-adapter:8080/all-events
 
 spring:
   datasource:
