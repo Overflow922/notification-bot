@@ -26,19 +26,4 @@ public class DbAdapterApplication {
     public ScheduleEventConvertor scheduleEventConvertor(ModelMapper modelMapper){
         return new ScheduleEventConvertor(modelMapper);
     }
-
-//    @Autowired
-//    ScheduleEventRepository scheduleEventRepository;
-//
-//@EventListener(value = ApplicationReadyEvent.class)
-//    public void createSchedule(){
-//        ScheduleEvent schedule = ScheduleEvent.builder()
-//                .id(1L)
-//                .userId(100L)
-//                .notificationText("hello")
-//                .originalRq("/add 16:00 hello")
-//                .build();
-//        scheduleEventRepository.save(schedule);
-//    }
-
 }
