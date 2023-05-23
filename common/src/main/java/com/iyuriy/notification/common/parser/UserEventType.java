@@ -8,9 +8,7 @@ public enum UserEventType {
     HELP("/help"),
     UNKNOWN("unknownCommand"),
     TIME_ZONE("/timezone"),
-    ALL_USER_EVENTS("/alluserevents"),
-    ALL_EVENTS("/allevents");
-
+    ALL_USER_EVENTS("/alluserevents");
 
     private final String userEventType;
 

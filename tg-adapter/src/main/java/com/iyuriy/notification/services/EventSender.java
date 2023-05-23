@@ -10,7 +10,4 @@ public interface EventSender {
     boolean deleteUserEvents(Long id);
 
     List<String> getUserEvents(Long id);
-
-    List<String> getAllEvents();
-
 }

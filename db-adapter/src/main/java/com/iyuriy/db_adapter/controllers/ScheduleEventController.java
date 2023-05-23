@@ -3,6 +3,7 @@ package com.iyuriy.db_adapter.controllers;
 import com.iyuriy.db_adapter.services.ScheduleEventService;
 import com.iyuriy.db_adapter.util.ScheduleEventNotCreatedException;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
+import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.util.ScheduleEventConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,28 +51,22 @@ public class ScheduleEventController {
     }
 
     @GetMapping("/user-events")
-    public List<ScheduleEventDto> getAllUserEvents(Long id) {
+    public List<String> getAllUserEvents(Long id) {
         log.info("Получаем ВСЕ события пользователя с id={}", id);
         return (scheduleEventService.showScheduleEventByUserId(id)
                 .stream()
-                .map(convertor::ModelToDto)
+                .map(this::convertScheduleToString)
                 .collect(Collectors.toList()));
     }
 
     @PostMapping("/user-delete")
-    public ResponseEntity<HttpStatus> deleteUserEvents(Long id) {
-        scheduleEventService.deleteScheduleEventByUserId(id);
-        log.info("Удаляем события пользователя с id={}", id);
+    public ResponseEntity<HttpStatus> deleteUserEvents(@RequestBody Long chatId) {
+        scheduleEventService.deleteScheduleEventByUserId(chatId);
+        log.info("Удаляем события пользователя с chatId={}", chatId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/all-events")
-    public List<ScheduleEventDto> getAllEvents() {
-        log.info("Получаем ВСЕ события из базы");
-        return scheduleEventService.findAll()
-                .stream()
-                .map(convertor::ModelToDto)
-                .collect(Collectors.toList());
+    public String convertScheduleToString(ScheduleEvent scheduleEvent) {
+        return scheduleEvent.getOriginalRq();
     }
-
 }

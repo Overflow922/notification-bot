@@ -103,7 +103,9 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
         KeyboardRow keyboardThirdRow = new KeyboardRow();
         keyboardThirdRow.add(new KeyboardButton("/alluserevents"));
-        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test"));
+        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test1"));
+        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test2"));
+        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test3"));
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);

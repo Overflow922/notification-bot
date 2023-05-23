@@ -41,14 +41,9 @@ public class ScheduleEventService {
     @Transactional
     public void deleteScheduleEventByUserId(Long id) {
         List<ScheduleEvent> events = scheduleEventRepository.findEventsByUserId(id);
-        log.info("События пользователя c id={} , {}", id, events);
-
-        // if (!events.isEmpty())
         for (ScheduleEvent event : events) {
-            log.info("Событие удалено {}", event);
             scheduleEventRepository.deleteEventByUserId(event.getUserId());
         }
-        //   scheduleEventRepository.deleteByUserId(id);
         log.info("Все события пользователя ChatId={} удалены", id);
     }
 

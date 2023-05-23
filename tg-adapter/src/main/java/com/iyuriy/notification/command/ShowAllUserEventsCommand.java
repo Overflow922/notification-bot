@@ -14,8 +14,11 @@ import static com.iyuriy.notification.common.parser.UserEventType.ALL_USER_EVENT
 @Service
 public class ShowAllUserEventsCommand implements Command {
 
-    public static final String EVENTS =
+    public static final String EVENTS_YES =
             "Список запланированных событий: ";
+
+    public static final String EVENTS_NO =
+            "У вас нет запланированных событий.";
 
     private final RestEventSender sender;
 
@@ -35,6 +38,17 @@ public class ShowAllUserEventsCommand implements Command {
         log.info("Показаны запланированные сообщения от пользователя chatId={}", chatId);
         List<String> events = sender.getUserEvents(chatId);
 
-        return EVENTS + "\n" + events;
+        if (!events.isEmpty())
+            return EVENTS_YES + "\n" + userEvents(events);
+        else
+            return EVENTS_NO;
+    }
+
+    private String userEvents(List<String> events) {
+        StringBuilder ev = new StringBuilder();
+        for (String event : events) {
+            ev.append(event).append("\n");
+        }
+        return ev.toString();
     }
 }

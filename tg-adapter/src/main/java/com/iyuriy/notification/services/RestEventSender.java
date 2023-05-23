@@ -28,28 +28,15 @@ public class RestEventSender implements EventSender {
     }
 
     @Override
-    public boolean deleteUserEvents(Long id) {
-
-        ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlUserDelete(), id, Void.class);
+    public boolean deleteUserEvents(Long chatId) {
+        ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlUserDelete(), chatId, Void.class);
 
         return entity.getStatusCode() == HttpStatus.OK;
     }
 
     @Override
     public List<String> getUserEvents(Long id) {
-
-        ResponseEntity<String[]> entity = restTemplate.getForEntity(configuration.getUrlUserEvents(), String[].class);
-
-        if (entity.getStatusCode() == HttpStatus.OK && entity.getBody() != null) {
-            return Arrays.asList(entity.getBody());
-        }
-        throw new RuntimeException();
-    }
-
-    @Override
-    public List<String> getAllEvents() {
-
-        ResponseEntity<String[]> entity = restTemplate.getForEntity(configuration.getUrlAllEvents(), String[].class);
+        ResponseEntity<String[]> entity = restTemplate.getForEntity(configuration.getUrlUserEvents() + "?id={id}", String[].class, id);
 
         if (entity.getStatusCode() == HttpStatus.OK && entity.getBody() != null) {
             return Arrays.asList(entity.getBody());
