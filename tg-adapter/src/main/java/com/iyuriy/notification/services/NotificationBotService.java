@@ -74,6 +74,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     }
 
     public void notifyUser(String text, Long chatId) {
+
         SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
         try {
             setButtons(message);
@@ -83,7 +84,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         }
     }
 
-    public synchronized void setButtons(SendMessage sendMessage) {
+    public void setButtons(SendMessage sendMessage) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -103,9 +104,9 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
 
         KeyboardRow keyboardThirdRow = new KeyboardRow();
         keyboardThirdRow.add(new KeyboardButton("/alluserevents"));
-        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test1"));
+        keyboardThirdRow.add(new KeyboardButton("/add 14:00 test1"));
         keyboardThirdRow.add(new KeyboardButton("/add 15:00 test2"));
-        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test3"));
+        keyboardThirdRow.add(new KeyboardButton("/add 16:00 test3"));
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);

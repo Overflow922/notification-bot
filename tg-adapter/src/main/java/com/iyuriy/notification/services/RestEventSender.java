@@ -1,6 +1,6 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.configs.RestEventSenderConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class RestEventSender implements EventSender {
     private final RestEventSenderConfiguration configuration;
 
     @Override
-    public boolean sendEvent(ScheduleEvent event) {
+    public boolean sendEvent(ScheduleEventDto event) {
         ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlSchedule(), event, Void.class);
 
         return entity.getStatusCode() == HttpStatus.OK;
@@ -43,5 +43,4 @@ public class RestEventSender implements EventSender {
         }
         throw new RuntimeException();
     }
-
 }

@@ -1,11 +1,11 @@
 package com.iyuriy.notification.services;
 
-import com.iyuriy.notification.common.models.ScheduleEvent;
+import com.iyuriy.notification.common.dto.ScheduleEventDto;
 
 import java.util.List;
 
 public interface EventSender {
-    boolean sendEvent(ScheduleEvent event);
+    boolean sendEvent(ScheduleEventDto event);
 
     boolean deleteUserEvents(Long id);
 

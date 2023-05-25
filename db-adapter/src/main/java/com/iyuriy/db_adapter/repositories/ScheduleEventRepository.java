@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ScheduleEventRepository extends JpaRepository<ScheduleEvent, Long> {
 
-    List<ScheduleEvent> findEventsByUserId(Long chatId);
+    List<ScheduleEvent> findEventsByUserIdAndIsSentToAdapterNull(Long chatId);
 
     void deleteEventByUserId(Long chatId);
 }

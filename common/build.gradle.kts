@@ -17,6 +17,8 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${versions["lombok"]}")
     testAnnotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
 
+    implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
+
     implementation("javax.persistence:javax.persistence-api:2.2")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")

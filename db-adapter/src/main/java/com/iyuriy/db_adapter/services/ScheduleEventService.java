@@ -22,10 +22,6 @@ public class ScheduleEventService {
         this.scheduleEventRepository = scheduleEventRepository;
     }
 
-    public List<ScheduleEvent> findAll() {
-        return scheduleEventRepository.findAll();
-    }
-
     @Transactional
     public void save(ScheduleEvent scheduleEvent) {
         enrichScheduleEvent(scheduleEvent);
@@ -35,12 +31,12 @@ public class ScheduleEventService {
 
     public List<ScheduleEvent> showScheduleEventByUserId(Long id) {
         log.info("Список событий пользователя с ChatId={} получен", id);
-        return scheduleEventRepository.findEventsByUserId(id);
+        return scheduleEventRepository.findEventsByUserIdAndIsSentToAdapterNull(id);
     }
 
     @Transactional
     public void deleteScheduleEventByUserId(Long id) {
-        List<ScheduleEvent> events = scheduleEventRepository.findEventsByUserId(id);
+        List<ScheduleEvent> events = scheduleEventRepository.findEventsByUserIdAndIsSentToAdapterNull(id);
         for (ScheduleEvent event : events) {
             scheduleEventRepository.deleteEventByUserId(event.getUserId());
         }
