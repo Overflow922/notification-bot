@@ -37,6 +37,7 @@ public class ScheduleEventService {
     @Transactional
     public void deleteScheduleEventByUserId(Long id) {
         List<ScheduleEvent> events = scheduleEventRepository.findEventsByUserIdAndIsSentToAdapterNull(id);
+
         for (ScheduleEvent event : events) {
             scheduleEventRepository.deleteEventByUserId(event.getUserId());
         }
