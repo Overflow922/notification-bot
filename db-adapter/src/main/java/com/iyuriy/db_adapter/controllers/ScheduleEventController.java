@@ -42,28 +42,30 @@ public class ScheduleEventController {
             log.info("Ошибка сервера! {}", e.getMessage());
         }
         return result;
-}
+    }
 
     @GetMapping("/user-events")
-    public List<String> getAllUserEvents(@Valid Long id) {
+    public ResponseEntity<List<String>> getAllUserEvents(Long id) {
+        List<String> result;
+        HttpStatus status;
 
-//добавить проверку поля с отправкой
-        //сходить в базу посмотреть есть ли айди, если нет, то 400
-        //
-
-        if (scheduleEventService.showScheduleEventByUserId(id)==null){
-
+        if (scheduleEventService.showScheduleEventByUserId(id) == null) {
+            result = null;
+            status = HttpStatus.BAD_REQUEST;
+            log.error("Пользователь не найден с chatId={}", id);
+        } else {
+            log.info("Получаем ВСЕ события пользователя с chatId={}", id);
+            result = scheduleEventService.showScheduleEventByUserId(id)
+                    .stream()
+                    .map(this::convertScheduleToString)
+                    .collect(Collectors.toList());
+            status = HttpStatus.OK;
         }
-
-        log.info("Получаем ВСЕ события пользователя с chatId={}", id);
-        return (scheduleEventService.showScheduleEventByUserId(id)
-                .stream()
-                .map(this::convertScheduleToString)
-                .collect(Collectors.toList()));
+        return new ResponseEntity<>(result, status);
     }
 
     @PostMapping("/user-delete")
-    public ResponseEntity<HttpStatus> deleteUserEvents(@RequestBody @Valid Long chatId) {
+    public ResponseEntity<HttpStatus> deleteUserEvents(@RequestBody Long chatId) {
         scheduleEventService.deleteScheduleEventByUserId(chatId);
         log.info("Удаляем события пользователя с chatId={}", chatId);
         return ResponseEntity.ok(HttpStatus.OK);
