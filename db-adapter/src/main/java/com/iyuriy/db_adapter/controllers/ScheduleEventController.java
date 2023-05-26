@@ -1,6 +1,5 @@
 package com.iyuriy.db_adapter.controllers;
 
-import com.iyuriy.db_adapter.repositories.ScheduleEventRepository;
 import com.iyuriy.db_adapter.services.ScheduleEventService;
 import com.iyuriy.db_adapter.util.ScheduleEventNotFoundException;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
@@ -8,9 +7,6 @@ import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.util.ScheduleEventConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,31 +73,6 @@ public class ScheduleEventController {
 
     private String convertScheduleToString(ScheduleEvent scheduleEvent) {
         return scheduleEvent.getOriginalRq();
-    }
-
-    @Autowired
-    ScheduleEventRepository scheduleEventRepository;
-
-    @EventListener(value = ApplicationReadyEvent.class)
-    public void createSchedule() {
-        ScheduleEvent schedule = ScheduleEvent.builder()
-                .id(1L)
-                .userId(100L)
-                .notificationText("hello")
-                .originalRq("/add 16:00 hello")
-                .build();
-        scheduleEventRepository.save(schedule);
-    }
-
-    @EventListener(value = ApplicationReadyEvent.class)
-    public void createSchedule2() {
-        ScheduleEvent schedule = ScheduleEvent.builder()
-                .id(2L)
-                .userId(50L)
-                .notificationText("hello")
-                .originalRq("/add 15:00 hello")
-                .build();
-        scheduleEventRepository.save(schedule);
     }
 
 }
