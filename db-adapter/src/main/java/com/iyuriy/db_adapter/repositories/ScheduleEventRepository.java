@@ -12,6 +12,7 @@ public interface ScheduleEventRepository extends JpaRepository<ScheduleEvent, Lo
 
     List<ScheduleEvent> findEventsByUserIdAndIsSentToAdapterNull(Long chatId);
 
+
     void deleteEventByUserId(Long chatId);
 
     Optional<ScheduleEvent> findEventByUserIdAndOriginalRqAndIsSentToAdapterNull(Long chatId, String text);

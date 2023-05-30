@@ -46,4 +46,5 @@ public class RestEventSender implements EventSender {
         }
         throw new RuntimeException();
     }
+
 }
