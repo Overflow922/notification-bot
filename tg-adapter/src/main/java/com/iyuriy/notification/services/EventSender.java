@@ -1,13 +1,14 @@
 package com.iyuriy.notification.services;
 
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
 public interface EventSender {
-    boolean sendEvent(ScheduleEventDto event);
+    HttpStatus sendEvent(ScheduleEventDto event);
 
-    boolean deleteUserEvents(Long id);
+    HttpStatus deleteUserEvents(Long id);
 
     List<String> getUserEvents(Long id);
 }

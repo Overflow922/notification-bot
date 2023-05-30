@@ -4,6 +4,7 @@ import com.iyuriy.notification.repositories.UserRepository;
 import com.iyuriy.notification.services.RestEventSender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,8 +36,9 @@ public class StopCommand implements Command {
 
         Long chatId = update.getMessage().getChatId();
 
-        if (!sender.deleteUserEvents(chatId))
+        if (sender.deleteUserEvents(chatId)==HttpStatus.BAD_REQUEST)
             throw new RuntimeException();
+
         sender.deleteUserEvents(chatId);
         log.info("Сообщения пользователя {} удалены из базы", chatId);
 

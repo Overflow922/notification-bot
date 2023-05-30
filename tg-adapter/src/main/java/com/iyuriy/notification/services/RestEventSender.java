@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -21,17 +22,19 @@ public class RestEventSender implements EventSender {
     private final RestEventSenderConfiguration configuration;
 
     @Override
-    public boolean sendEvent(ScheduleEventDto event) {
-        ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlSchedule(), event, Void.class);
-
-        return entity.getStatusCode() == HttpStatus.OK;
-    }
+    public HttpStatus sendEvent(ScheduleEventDto event) {
+        try {
+            ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlSchedule(), event, Void.class);
+           return entity.getStatusCode();
+        }
+        catch (HttpClientErrorException.Conflict e){log.error("Ошибка в sender");
+            return HttpStatus.CONFLICT;}
+       }
 
     @Override
-    public boolean deleteUserEvents(Long chatId) {
+    public HttpStatus deleteUserEvents(Long chatId) {
         ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlUserDelete(), chatId, Void.class);
-
-        return entity.getStatusCode() == HttpStatus.OK;
+        return entity.getStatusCode();
     }
 
     @Override

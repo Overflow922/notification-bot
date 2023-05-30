@@ -74,7 +74,6 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
     }
 
     public void notifyUser(String text, Long chatId) {
-
         SendMessage message = SendMessage.builder().chatId(chatId).text(text).build();
         try {
             setButtons(message);
@@ -82,6 +81,11 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         } catch (Exception e) {
             log.error("Не удалось отправить сообщение {}", message, e);
         }
+    }
+
+    public boolean isUserIdExist(Long chatId){
+      User user = userRepository.findUserByChatId(chatId);
+        return user != null;
     }
 
     public void setButtons(SendMessage sendMessage) {
@@ -106,7 +110,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         keyboardThirdRow.add(new KeyboardButton("/alluserevents"));
         keyboardThirdRow.add(new KeyboardButton("/add 7:00 test1"));
         keyboardThirdRow.add(new KeyboardButton("/add 15:00 test2"));
-        keyboardThirdRow.add(new KeyboardButton("/add 16:00 test3"));
+        keyboardThirdRow.add(new KeyboardButton("/add 23:00 test3"));
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);

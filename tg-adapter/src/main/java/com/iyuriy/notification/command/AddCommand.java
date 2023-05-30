@@ -8,6 +8,7 @@ import com.iyuriy.notification.repositories.UserRepository;
 import com.iyuriy.notification.services.RestEventSender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -20,7 +21,9 @@ public class AddCommand implements Command {
 
     private final static String ANSWER_YES = "Событие запланировано: ";
 
-    private final static String ANSWER_NO = "Это событие уже было запланировано ранее: ";
+    private final static String ANSWER_DUPLICATE = "Это событие уже было запланировано ранее!";
+
+    private final static String ANSWER_NO = "Не удалось запланировать событие!";
 
     private final ScheduleParser parser;
 
@@ -44,13 +47,16 @@ public class AddCommand implements Command {
 
         ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
         event.setUserId(chatId);
-        log.info("Sending event: {}", event);
+        log.info("Событие отправлено: {}", event);
 
-        boolean answer = sender.sendEvent(convertor.ModelToDto(event));
+        HttpStatus statusAnswer = sender.sendEvent(convertor.ModelToDto(event));
 
-        if (answer == true)
+        if (statusAnswer == HttpStatus.OK) {
             return ANSWER_YES + text;
-
-        else return ANSWER_NO;
+        } else if (statusAnswer == HttpStatus.CONFLICT) {
+            return ANSWER_DUPLICATE;
+        } else {
+            return ANSWER_NO;
+        }
     }
 }
