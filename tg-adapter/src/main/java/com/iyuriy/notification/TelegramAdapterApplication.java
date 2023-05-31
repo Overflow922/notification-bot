@@ -14,11 +14,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @SpringBootApplication
 public class TelegramAdapterApplication {
 
-    private final LongPollingBot bot;
-
     public static void main(String[] args) {
         SpringApplication.run(TelegramAdapterApplication.class, args);
     }
+
+    private final LongPollingBot bot;
 
     @EventListener(ApplicationReadyEvent.class)
     @SneakyThrows
@@ -26,4 +26,5 @@ public class TelegramAdapterApplication {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(bot);
     }
+
 }

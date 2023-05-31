@@ -1,5 +1,6 @@
 package com.iyuriy.notification.common.models;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public final class ScheduleEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "timeToTrigger should not be empty or null")
     @Column(name = "time_to_trigger")
     private Instant timeToTrigger;
 
@@ -35,6 +37,7 @@ public final class ScheduleEvent {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @NotEmpty(message = "userId should not be empty or null")
     @Column(name = "user_id")
     private Long userId;
 }

@@ -1,22 +1,20 @@
 package com.iyuriy.notification.command;
 
-import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.repositories.UserRepository;
 import com.iyuriy.notification.services.RestEventSender;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.iyuriy.notification.common.parser.UserEventType.STOP;
 
+@AllArgsConstructor
 @Slf4j
 @Service
 public class StopCommand implements Command {
-
-    private final UserRepository userRepository;
-    private final RestEventSender sender;
 
     public static final String STOP_MESSAGE = """
             Пользователь и его запланированные события удалены \uD83D\uDE1F.
@@ -24,11 +22,8 @@ public class StopCommand implements Command {
             /start
             """;
 
-    @Autowired
-    public StopCommand(UserRepository userRepository, RestEventSender sender) {
-        this.userRepository = userRepository;
-        this.sender = sender;
-    }
+    private final UserRepository userRepository;
+    private final RestEventSender sender;
 
     @Override
     public String commandType() {
@@ -38,15 +33,19 @@ public class StopCommand implements Command {
     @Transactional
     @Override
     public String execute(Update update) {
+
         Long chatId = update.getMessage().getChatId();
 
-        User user = userRepository.findUserByChatId(chatId);
+        if (sender.deleteUserEvents(chatId)==HttpStatus.BAD_REQUEST)
+            throw new RuntimeException();
+
         sender.deleteUserEvents(chatId);
         log.info("Сообщения пользователя {} удалены из базы", chatId);
 
-
         userRepository.deleteUserByChatId(chatId);
         log.info("Пользователь {} удален из базы", chatId);
+
         return STOP_MESSAGE;
     }
+
 }

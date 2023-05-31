@@ -17,7 +17,8 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${versions["lombok"]}")
     testAnnotationProcessor("org.projectlombok:lombok:${versions["lombok"]}")
 
-    implementation("javax.persistence:javax.persistence-api:2.2")
+    implementation("jakarta.validation:jakarta.validation-api:${versions["jakarta"]}")
+    implementation("javax.persistence:javax.persistence-api:${versions["javax"]}")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions["junit"]}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${versions["junit"]}")
