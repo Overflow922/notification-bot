@@ -8,7 +8,8 @@ public enum UserEventType {
     HELP("/help"),
     UNKNOWN("unknownCommand"),
     TIME_ZONE("/timezone"),
-    ALL_USER_EVENTS("/alluserevents");
+    ALL_USER_EVENTS("/alluserevents"),
+    DELETE_EVENT("/delete");
 
     private final String userEventType;
 

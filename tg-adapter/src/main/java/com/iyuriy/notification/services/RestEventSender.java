@@ -1,5 +1,6 @@
 package com.iyuriy.notification.services;
 
+import com.iyuriy.notification.common.dto.CommandDto;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
 import com.iyuriy.notification.configs.RestEventSenderConfiguration;
 import lombok.AllArgsConstructor;
@@ -25,11 +26,12 @@ public class RestEventSender implements EventSender {
     public HttpStatus sendEvent(ScheduleEventDto event) {
         try {
             ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlSchedule(), event, Void.class);
-           return entity.getStatusCode();
+            return entity.getStatusCode();
+        } catch (HttpClientErrorException.Conflict e) {
+            log.error("Ошибка в sender");
+            return HttpStatus.CONFLICT;
         }
-        catch (HttpClientErrorException.Conflict e){log.error("Ошибка в sender");
-            return HttpStatus.CONFLICT;}
-       }
+    }
 
     @Override
     public HttpStatus deleteUserEvents(Long chatId) {
@@ -45,6 +47,18 @@ public class RestEventSender implements EventSender {
             return Arrays.asList(entity.getBody());
         }
         throw new RuntimeException();
+    }
+
+    @Override
+    public HttpStatus deleteOneUserEvent(Long chatId, String text) {
+        try {
+            CommandDto commandDto = CommandDto.builder().chatId(chatId).text(text).build();
+            ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlDeleteOneEvent(), commandDto, Void.class);
+            return entity.getStatusCode();
+        } catch (HttpClientErrorException.Conflict e) {
+            log.error("Ошибка в deleteOneUserEvent sender");
+            return HttpStatus.CONFLICT;
+        }
     }
 
 }

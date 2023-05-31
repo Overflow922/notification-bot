@@ -51,6 +51,21 @@ public class ScheduleEventService {
         log.info("Все события пользователя ChatId={} удалены", id);
     }
 
+    @Transactional
+    public void deleteOneScheduleEventByUserId(Long id, String text) {
+
+
+        Optional<ScheduleEvent> event = scheduleEventRepository.findEventByUserIdAndOriginalRqAndIsSentToAdapterNull(id, text);
+        if (event.isEmpty()) {
+            log.info("Такого события нет!");
+            throw new ScheduleEventDuplicateException();
+        }
+        scheduleEventRepository.deleteEventByUserIdAndOriginalRq(id, text);
+        log.info("Событие {} пользователя c ChatId={} удалено", text, id);
+
+    }
+
+
     private void enrichScheduleEvent(ScheduleEvent scheduleEvent) {
         scheduleEvent.setCreatedAt(Instant.now());
     }
