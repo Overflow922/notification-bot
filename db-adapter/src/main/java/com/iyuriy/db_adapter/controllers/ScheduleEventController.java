@@ -82,11 +82,10 @@ public class ScheduleEventController {
     @PostMapping("/delete-one-event")
     public ResponseEntity<HttpStatus> deleteOneEvent(@RequestBody @Valid CommandDto commandDto) {
         ResponseEntity<HttpStatus> result;
-
         try {
             Long chatId = commandDto.getChatId();
             String text = commandDto.getText();
-            String textToDelete = text.replace("/delete", "/add");
+            String textToDelete = convertDeleteToAddString(text);
             log.info("Удаляем событие '{}' пользователя с chatId={}", textToDelete, chatId);
             scheduleEventService.deleteOneScheduleEventByUserId(chatId, textToDelete);
             result = ResponseEntity.status(HttpStatus.OK).build();
@@ -107,6 +106,10 @@ public class ScheduleEventController {
 
     private String convertScheduleToString(ScheduleEvent scheduleEvent) {
         return scheduleEvent.getOriginalRq();
+    }
+
+    private String convertDeleteToAddString(String text) {
+        return text.replace("/delete", "/add");
     }
 
 }
