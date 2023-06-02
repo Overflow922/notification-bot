@@ -2,6 +2,7 @@ package com.iyuriy.db_adapter.services;
 
 import com.iyuriy.db_adapter.repositories.ScheduleEventRepository;
 import com.iyuriy.db_adapter.util.ScheduleEventDuplicateException;
+import com.iyuriy.db_adapter.util.ScheduleEventNotFoundException;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,17 @@ public class ScheduleEventService {
         }
         log.info("Все события пользователя ChatId={} удалены", id);
     }
+
+    @Transactional
+    public void deleteOneScheduleEventByUserId(Long id, String text) {
+        Long event = scheduleEventRepository.deleteEventByUserIdAndOriginalRq(id, text);
+        log.info("Событие {} пользователя c ChatId={} удалено", text, id);
+        if (event == 0) {
+            log.info("Такого события нет!");
+            throw new ScheduleEventNotFoundException();
+        }
+    }
+
 
     private void enrichScheduleEvent(ScheduleEvent scheduleEvent) {
         scheduleEvent.setCreatedAt(Instant.now());

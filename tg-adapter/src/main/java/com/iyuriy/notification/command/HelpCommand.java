@@ -12,14 +12,18 @@ public class HelpCommand implements Command {
 
     public static final String HELP_MESSAGE = String.format(
             "Доступные команды:\n\n" +
-                    "%s - старт\n\n" +
-                    "%s - получить помощь\n\n" +
-                    "%s - Добавить задание\n\n" +
-                    "%s - Ввести Time Zone\n\n" +
-                    "%s - приостановить работу\n\n",
+                    "%s - Старт\n\n" +
+                    "%s - Получить помощь\n\n" +
+                    "%s - Добавить событие\n\n" +
+                    "%s - Удалить событие\n\n" +
+                    "%s - Посмотреть все события\n\n" +
+                    "%s - Узнать текущую временную зону\n\n" +
+                    "%s - Приостановить работу\n\n",
             START.getUserEventType(),
             HELP.getUserEventType(),
             ADD.getUserEventType(),
+            DELETE_EVENT.getUserEventType(),
+            ALL_USER_EVENTS.getUserEventType(),
             TIME_ZONE.getUserEventType(),
             STOP.getUserEventType());
 

@@ -36,14 +36,12 @@ public class StopCommand implements Command {
 
         Long chatId = update.getMessage().getChatId();
 
-        if (sender.deleteUserEvents(chatId)==HttpStatus.BAD_REQUEST)
-            throw new RuntimeException();
-
-        sender.deleteUserEvents(chatId);
-        log.info("Сообщения пользователя {} удалены из базы", chatId);
-
         userRepository.deleteUserByChatId(chatId);
         log.info("Пользователь {} удален из базы", chatId);
+
+        if (sender.deleteUserEvents(chatId) != HttpStatus.OK)
+            throw new RuntimeException();
+        log.info("Сообщения пользователя {} удалены из базы", chatId);
 
         return STOP_MESSAGE;
     }

@@ -17,4 +17,7 @@ public class RestEventSenderConfiguration {
     @Value("${db-adapter-rest.url-user-delete}")
     private String urlUserDelete;
 
+    @Value("${db-adapter-rest.url-event-delete}")
+    private String urlDeleteOneEvent;
+
 }

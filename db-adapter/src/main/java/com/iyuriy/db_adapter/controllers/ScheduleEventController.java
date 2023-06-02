@@ -4,6 +4,7 @@ import com.iyuriy.db_adapter.services.ScheduleEventService;
 import com.iyuriy.db_adapter.util.ScheduleEventDuplicateException;
 import com.iyuriy.db_adapter.util.ScheduleEventNotFoundException;
 import com.iyuriy.notification.common.dto.ScheduleEventDto;
+import com.iyuriy.notification.common.dto.CommandDto;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.util.ScheduleEventConvertor;
 import lombok.AllArgsConstructor;
@@ -78,8 +79,32 @@ public class ScheduleEventController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/delete-one-event")
+    public ResponseEntity<HttpStatus> deleteOneEvent(@RequestBody @Valid CommandDto commandDto) {
+        ResponseEntity<HttpStatus> result;
+        try {
+            Long chatId = commandDto.getChatId();
+            String text = commandDto.getText();
+            String textToDelete = convertDeleteToAddString(text);
+            log.info("Удаляем событие '{}' пользователя с chatId={}", textToDelete, chatId);
+            scheduleEventService.deleteOneScheduleEventByUserId(chatId, textToDelete);
+            result = ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ScheduleEventNotFoundException e) {
+            result = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            log.info("Такого события в базе нет! {}", e.getMessage());
+        } catch (Exception e) {
+            result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            log.info("Ошибка сервера! {}", e.getMessage());
+        }
+        return result;
+    }
+
     private String convertScheduleToString(ScheduleEvent scheduleEvent) {
         return scheduleEvent.getOriginalRq();
+    }
+
+    private String convertDeleteToAddString(String text) {
+        return text.replace("/delete", "/add");
     }
 
 }

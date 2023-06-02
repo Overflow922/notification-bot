@@ -11,4 +11,7 @@ public interface EventSender {
     HttpStatus deleteUserEvents(Long id);
 
     List<String> getUserEvents(Long id);
+
+    HttpStatus deleteOneUserEvent(Long id, String text);
+
 }
