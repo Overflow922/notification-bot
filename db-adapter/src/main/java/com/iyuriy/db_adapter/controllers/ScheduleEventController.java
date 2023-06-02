@@ -89,14 +89,9 @@ public class ScheduleEventController {
             log.info("Удаляем событие '{}' пользователя с chatId={}", textToDelete, chatId);
             scheduleEventService.deleteOneScheduleEventByUserId(chatId, textToDelete);
             result = ResponseEntity.status(HttpStatus.OK).build();
-
-        } catch (ScheduleEventDuplicateException e) {
-            result = ResponseEntity.status(HttpStatus.CONFLICT).build();
-            log.info("Такое событие уже запланировано {}", e.getMessage());
-
         } catch (ScheduleEventNotFoundException e) {
             result = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            log.info("Ошибка в запросе! {}", e.getMessage());
+            log.info("Такого события в базе нет! {}", e.getMessage());
         } catch (Exception e) {
             result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             log.info("Ошибка сервера! {}", e.getMessage());

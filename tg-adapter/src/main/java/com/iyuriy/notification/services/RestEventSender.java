@@ -28,7 +28,7 @@ public class RestEventSender implements EventSender {
             ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlSchedule(), event, Void.class);
             return entity.getStatusCode();
         } catch (HttpClientErrorException.Conflict e) {
-            log.error("Ошибка в sender");
+            log.error("Ошибка в sendEvent");
             return HttpStatus.CONFLICT;
         }
     }
@@ -55,9 +55,9 @@ public class RestEventSender implements EventSender {
             CommandDto commandDto = CommandDto.builder().chatId(chatId).text(text).build();
             ResponseEntity<Void> entity = restTemplate.postForEntity(configuration.getUrlDeleteOneEvent(), commandDto, Void.class);
             return entity.getStatusCode();
-        } catch (HttpClientErrorException.Conflict e) {
+        } catch (HttpClientErrorException.BadRequest e) {
             log.error("Ошибка в deleteOneUserEvent sender");
-            return HttpStatus.CONFLICT;
+            return HttpStatus.BAD_REQUEST;
         }
     }
 
