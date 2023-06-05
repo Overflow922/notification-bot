@@ -3,20 +3,27 @@ package com.iyuriy.notification.command;
 import com.iyuriy.notification.common.models.ScheduleEvent;
 import com.iyuriy.notification.common.models.User;
 import com.iyuriy.notification.common.parser.ScheduleParser;
+import com.iyuriy.notification.common.util.ScheduleEventConvertor;
 import com.iyuriy.notification.repositories.UserRepository;
 import com.iyuriy.notification.services.RestEventSender;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.iyuriy.notification.common.parser.UserEventType.ADD;
 
+@AllArgsConstructor
 @Slf4j
 @Service
 public class AddCommand implements Command {
 
-    private final static String ANSWER = "Событие запланировано";
+    private final static String ANSWER_YES = "Событие запланировано: ";
+
+    private final static String ANSWER_DUPLICATE = "Это событие уже было запланировано ранее!";
+
+    private final static String ANSWER_NO = "Не удалось запланировать событие!";
 
     private final ScheduleParser parser;
 
@@ -24,12 +31,7 @@ public class AddCommand implements Command {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public AddCommand(ScheduleParser parser, RestEventSender sender, UserRepository userRepository) {
-        this.parser = parser;
-        this.sender = sender;
-        this.userRepository = userRepository;
-    }
+    private final ScheduleEventConvertor convertor;
 
     @Override
     public String commandType() {
@@ -41,13 +43,21 @@ public class AddCommand implements Command {
         String text = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
 
-        User user = userRepository.findByChatId(chatId);
+        User user = userRepository.findUserByChatId(chatId);
 
         ScheduleEvent event = parser.parseEvent(text, user.getTimeZone());
         event.setUserId(chatId);
-        log.info("Sending event: {}", event);
-        sender.send(event);
+        log.info("Событие отправлено: {}", event);
 
-        return ANSWER;
+        HttpStatus statusAnswer = sender.sendEvent(convertor.ModelToDto(event));
+
+        if (statusAnswer == HttpStatus.OK) {
+            return ANSWER_YES + text;
+        } else if (statusAnswer == HttpStatus.CONFLICT) {
+            return ANSWER_DUPLICATE;
+        } else {
+            return ANSWER_NO;
+        }
     }
+  
 }

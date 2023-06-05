@@ -46,7 +46,7 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
             log.info("Входящее сообщение incoming message from {}", chatId);
 
             try {
-                User user = userRepository.findByChatId(chatId);
+                User user = userRepository.findUserByChatId(chatId);
                 if (user == null) {
                     user = createNewUser(chatId);
                     log.info("New user saved to database: {}", user);
@@ -83,7 +83,12 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         }
     }
 
-    public synchronized void setButtons(SendMessage sendMessage) {
+    public boolean isUserIdExist(Long chatId){
+      User user = userRepository.findUserByChatId(chatId);
+        return user != null;
+    }
+
+    public void setButtons(SendMessage sendMessage) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -94,16 +99,23 @@ public class NotificationBotService extends TelegramLongPollingCommandBot {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(new KeyboardButton("/start"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
-        keyboardFirstRow.add(new KeyboardButton("/timezone"));
         keyboardFirstRow.add(new KeyboardButton("/stop"));
 
         KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton("/timezone"));
         keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Moscow"));
         keyboardSecondRow.add(new KeyboardButton("/timezone Europe/Paris"));
-        keyboardSecondRow.add(new KeyboardButton("/add 15:00 test"));
+
+        KeyboardRow keyboardThirdRow = new KeyboardRow();
+        keyboardThirdRow.add(new KeyboardButton("/alluserevents"));
+        keyboardThirdRow.add(new KeyboardButton("/add 7:00 test1"));
+        keyboardThirdRow.add(new KeyboardButton("/add 15:00 test2"));
+        keyboardThirdRow.add(new KeyboardButton("/add 23:00 test3"));
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);
+        keyboard.add(keyboardThirdRow);
+
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
