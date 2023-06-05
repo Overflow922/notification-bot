@@ -6,10 +6,9 @@ public enum UserEventType {
     START("/start"),
     STOP("/stop"),
     HELP("/help"),
-
     UNKNOWN("unknownCommand"),
-
-    TIME_ZONE("/timezone");
+    TIME_ZONE("/timezone"),
+    ALL_USER_EVENTS("/alluserevents");
 
     private final String userEventType;
 

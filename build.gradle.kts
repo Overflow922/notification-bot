@@ -71,7 +71,9 @@ extra["versions"] = mapOf(
     "mockito" to "1.10.19",
     "mockito-junit" to "5.2.0",
     "telegrambots" to "6.5.0",
-    "hibernate" to "8.0.0.Final"
+    "hibernate" to "8.0.0.Final",
+    "jakarta" to "3.0.2",
+    "javax" to "2.2"
 )
 
 //configurations.all {
